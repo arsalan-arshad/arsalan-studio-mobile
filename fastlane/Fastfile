@@ -1,0 +1,73 @@
+# Fastlane wrappers around Expo EAS.
+# Prefer EAS for cloud builds; use these lanes for repeatable release automation.
+# Credentials: env vars / CI secrets only — never commit keys or keystores.
+
+default_platform(:ios)
+
+def ensure_eas_auth_hint!
+  return if ENV["EXPO_TOKEN"].to_s.strip != ""
+  UI.message("Tip: run `eas login` locally, or set EXPO_TOKEN in CI for non-interactive builds.")
+end
+
+def eas_build!(platform:, profile:)
+  ensure_eas_auth_hint!
+  sh("npx", "eas-cli", "build", "--platform", platform, "--profile", profile, "--non-interactive")
+end
+
+def eas_submit!(platform:)
+  sh("npx", "eas-cli", "submit", "--platform", platform, "--latest", "--non-interactive")
+end
+
+platform :ios do
+  desc "Typecheck the Expo TypeScript project"
+  lane :typecheck do
+    sh("npm", "run", "typecheck")
+  end
+
+  desc "EAS production build for iOS (no submit)"
+  lane :build do
+    typecheck
+    eas_build!(platform: "ios", profile: "production")
+  end
+
+  desc "EAS preview (internal) build for iOS"
+  lane :preview do
+    typecheck
+    eas_build!(platform: "ios", profile: "preview")
+  end
+
+  desc "Beta placeholder: EAS production iOS build + submit to App Store Connect"
+  lane :beta do
+    UI.important("Requires App Store Connect API key env vars — see fastlane/README.md")
+    typecheck
+    eas_build!(platform: "ios", profile: "production")
+    eas_submit!(platform: "ios")
+  end
+end
+
+platform :android do
+  desc "Typecheck the Expo TypeScript project"
+  lane :typecheck do
+    sh("npm", "run", "typecheck")
+  end
+
+  desc "EAS production build for Android (no submit)"
+  lane :build do
+    typecheck
+    eas_build!(platform: "android", profile: "production")
+  end
+
+  desc "EAS preview (internal) build for Android"
+  lane :preview do
+    typecheck
+    eas_build!(platform: "android", profile: "preview")
+  end
+
+  desc "Beta placeholder: EAS production Android build + submit to Play Console"
+  lane :beta do
+    UI.important("Requires Google Play JSON key — see fastlane/README.md")
+    typecheck
+    eas_build!(platform: "android", profile: "production")
+    eas_submit!(platform: "android")
+  end
+end

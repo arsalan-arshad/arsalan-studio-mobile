@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "Arsalan Arshad",
+    "slug": "arsalan-studio",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "arsalanstudio",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#eef1f5"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "studio.arsalan.app",
+      "buildNumber": "1",
+      "associatedDomains": ["applinks:arsalandev.studio"]
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#eef1f5",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "studio.arsalan.app",
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "arsalandev.studio",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "replace-after-eas-init"
+      },
+      "apiUrl": "https://arsalandev.studio",
+      "domain": "arsalandev.studio"
+    }
+  }
+}
