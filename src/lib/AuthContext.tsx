@@ -9,10 +9,10 @@ import {
 } from "react";
 import {
   AuthUser,
-  clearSession,
   getStoredUser,
   getToken,
   login as apiLogin,
+  logout as apiLogout,
   register as apiRegister,
 } from "./api";
 
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(u);
       },
       async logout() {
-        await clearSession();
+        await apiLogout();
         setUser(null);
       },
       refresh,

@@ -1,6 +1,6 @@
 # Arsalan Studio — Mobile
 
-Expo (SDK 58) client for [Arsalan Arshad](https://github.com/arsalan-arshad)’s studio marketplace. Talks to the web API over Bearer JWTs.
+Expo (SDK 58) client for [Arsalan Arshad](https://github.com/arsalan-arshad)’s studio marketplace. Talks to the web API over short-lived Bearer access JWTs (1h) plus rotatable refresh tokens (30d, stored locally; refreshed on 401).
 
 | | |
 |---|---|
