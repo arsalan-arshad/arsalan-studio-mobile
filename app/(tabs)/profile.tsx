@@ -90,12 +90,28 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Password (min 8)"
+            placeholder={
+              mode === "signup"
+                ? "Password (10+, upper, lower, number, special)"
+                : "Password"
+            }
             placeholderTextColor={colors.muted}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
           />
+          {mode === "signup" ? (
+            <Text style={styles.hint}>
+              Min 10 characters with uppercase, lowercase, a number, and a
+              special character. Google sign-in is available on the website
+              only for now.
+            </Text>
+          ) : (
+            <Text style={styles.hint}>
+              Forgot password? Reset on the website (arsalandev.studio). Google
+              OAuth is web-only for now.
+            </Text>
+          )}
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <Pressable style={styles.primary} onPress={onSubmit} disabled={busy}>
             <Text style={styles.primaryText}>
@@ -173,6 +189,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
     backgroundColor: colors.bg,
   },
+  hint: { marginTop: 8, color: colors.muted, fontSize: 12, lineHeight: 17 },
   error: { marginTop: 8, color: "#b42318", fontSize: 13 },
   primary: {
     marginTop: 14,
