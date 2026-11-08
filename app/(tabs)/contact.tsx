@@ -179,5 +179,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: "center",
   },
-  primaryText: { color: "#f8faf9", fontWeight: "700" },
+  primaryText: { color: colors.onAccent, fontWeight: "700" },
 });

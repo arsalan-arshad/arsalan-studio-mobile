@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: "center",
   },
-  primaryText: { color: "#f8faf9", fontWeight: "700" },
+  primaryText: { color: colors.onAccent, fontWeight: "700" },
   ghost: {
     marginTop: 10,
     borderWidth: 1,
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     maxWidth: "92%",
   },
-  bubbleAdmin: { alignSelf: "flex-end", backgroundColor: "#e8f1f0" },
+  bubbleAdmin: { alignSelf: "flex-end", backgroundColor: colors.accentWash },
   bubbleMeta: { color: colors.muted, fontSize: 11 },
   bubbleBody: { marginTop: 4, color: colors.ink, fontSize: 14, lineHeight: 20 },
   statusRow: { flexDirection: "row", gap: 8, marginTop: 10 },
@@ -335,5 +335,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   statusChipText: { fontSize: 11, fontWeight: "700", color: colors.ink },
-  error: { marginTop: 8, color: "#b42318", fontSize: 13 },
+  error: { marginTop: 8, color: colors.danger, fontSize: 13 },
 });
