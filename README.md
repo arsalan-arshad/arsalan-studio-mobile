@@ -21,6 +21,18 @@ Open source PRs are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 - **Messages** — client threads, or **admin inbox** when `role=ADMIN`
 - **Contact** — public `POST /api/contact`
 
+### Auth notes (parity with web)
+
+| Feature | Mobile | Web |
+|---|---|---|
+| Email + password | Yes (`POST /api/auth/token`, `/register`) | Yes (Auth.js credentials) |
+| Strong password (10+, upper/lower/number/special) | Enforced by API on signup | Same + UI hint |
+| Forgot / reset password | Use **website** `/forgot-password` | Full flow + Resend |
+| Google OAuth | **Not in app yet** (use web, or email/password here) | Auth.js Google when `AUTH_GOOGLE_*` set |
+| Access JWT + refresh | Yes (1h / 30d rotate) | Cookie session on web |
+
+Google on mobile would need Expo AuthSession + a backend exchange; intentionally deferred so web Google works first without breaking the Bearer API.
+
 ---
 
 ## Local setup
