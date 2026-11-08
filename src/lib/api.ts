@@ -5,7 +5,7 @@ const TOKEN_KEY = "arsalan.auth.token";
 const REFRESH_KEY = "arsalan.auth.refresh";
 const USER_KEY = "arsalan.auth.user";
 
-export type Role = "CLIENT" | "ADMIN";
+export type Role = "CLIENT" | "ADMIN" | "SUB_ADMIN";
 
 export type AuthUser = {
   id: string;
