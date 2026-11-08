@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 4,
   },
-  primaryText: { color: "#f8faf9", fontWeight: "700" },
+  primaryText: { color: colors.onAccent, fontWeight: "700" },
   ghost: {
     borderWidth: 1,
     borderColor: colors.line,

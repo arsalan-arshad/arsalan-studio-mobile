@@ -1,11 +1,14 @@
-/** Cool porcelain mist + Prussian ink — mirrors web. */
+/** Night atelier — deep ink + brass accent; mirrors web. */
 export const colors = {
-  bg: "#eef1f5",
-  elevated: "#f7f9fb",
-  ink: "#12161c",
-  muted: "#5a6573",
-  accent: "#2c4a6e",
-  accentSoft: "#3a5f88",
-  sage: "#3f6a5c",
-  line: "rgba(18, 22, 28, 0.1)",
+  bg: "#0b0d12",
+  elevated: "#141820",
+  ink: "#eceef3",
+  muted: "#939aa8",
+  accent: "#d4a45a",
+  accentSoft: "#e0b56e",
+  sage: "#7a9e8c",
+  line: "rgba(236, 238, 243, 0.1)",
+  onAccent: "#0c0e12",
+  danger: "#e07a7a",
+  accentWash: "rgba(212, 164, 90, 0.14)",
 } as const;

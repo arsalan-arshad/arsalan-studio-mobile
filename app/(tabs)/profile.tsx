@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
   },
   hint: { marginTop: 8, color: colors.muted, fontSize: 12, lineHeight: 17 },
-  error: { marginTop: 8, color: "#b42318", fontSize: 13 },
+  error: { marginTop: 8, color: colors.danger, fontSize: 13 },
   primary: {
     marginTop: 14,
     backgroundColor: colors.accent,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: "center",
   },
-  primaryText: { color: "#f8faf9", fontWeight: "700" },
+  primaryText: { color: colors.onAccent, fontWeight: "700" },
   ghost: {
     marginTop: 10,
     padding: 10,

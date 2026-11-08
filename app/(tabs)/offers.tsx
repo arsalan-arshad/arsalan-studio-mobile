@@ -57,5 +57,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 4,
   },
-  ctaText: { color: "#f8faf9", fontWeight: "700", fontSize: 13 },
+  ctaText: { color: colors.onAccent, fontWeight: "700", fontSize: 13 },
 });
