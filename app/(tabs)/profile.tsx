@@ -15,7 +15,7 @@ import { getApiBase } from "../../src/lib/api";
 import { colors } from "../../src/theme";
 
 export default function ProfileScreen() {
-  const { user, loading, isAdmin, login, register, logout } = useAuth();
+  const { user, loading, isAdmin, isSubAdmin, login, register, logout } = useAuth();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,7 +47,9 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-      <Text style={styles.eyebrow}>{isAdmin ? "Admin account" : "Account"}</Text>
+      <Text style={styles.eyebrow}>
+        {isAdmin ? "Admin account" : isSubAdmin ? "Support account" : "Account"}
+      </Text>
       <Text style={styles.title}>Profile</Text>
 
       {user ? (
@@ -56,7 +58,12 @@ export default function ProfileScreen() {
           <Text style={styles.boxBody}>
             {user.email}
             {"\n"}
-            Role: {isAdmin ? "Admin (studio inbox)" : "Client"}
+            Role:{" "}
+            {isAdmin
+              ? "Admin (studio inbox)"
+              : isSubAdmin
+                ? "Support (inquiries — no client chat)"
+                : "Client"}
             {"\n"}
             API: {getApiBase()}
           </Text>
