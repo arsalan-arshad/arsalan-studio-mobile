@@ -10,9 +10,8 @@ import {
   View,
 } from "react-native";
 import { projectNeeds } from "../../src/data/inquiryOptions";
+import { getApiBase } from "../../src/lib/api";
 import { colors } from "../../src/theme";
-
-const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
 
 export default function ContactScreen() {
   const params = useLocalSearchParams<{ need?: string; offer?: string }>();
@@ -38,7 +37,8 @@ export default function ContactScreen() {
     }
     setSending(true);
     try {
-      const res = await fetch(`${API_URL}/api/contact`, {
+      const api = getApiBase();
+      const res = await fetch(`${api}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ export default function ContactScreen() {
     } catch {
       Alert.alert(
         "Could not send",
-        `Is the web API running at ${API_URL}? You can still email arsalanarshad.dev@gmail.com.`,
+        `Is the web API running at ${getApiBase()}? You can still email arsalanarshad.dev@gmail.com.`,
       );
     } finally {
       setSending(false);
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   chipOn: {
     borderColor: colors.accent,
-    backgroundColor: "rgba(31,92,99,0.08)",
+    backgroundColor: colors.accentWash,
   },
   chipText: { color: colors.muted, fontSize: 12 },
   chipTextOn: { color: colors.accentSoft, fontWeight: "600" },

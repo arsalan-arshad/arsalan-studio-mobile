@@ -14,7 +14,7 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://YOUR-RAILWAY-APP.up.railway.app"
+        "EXPO_PUBLIC_API_URL": "https://arsalandev.studio"
       }
     },
     "production": {

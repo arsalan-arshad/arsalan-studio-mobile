@@ -50,11 +50,11 @@ Typecheck:
 npm run typecheck
 ```
 
-Point production / preview builds at your Railway URL first, then `https://arsalandev.studio` after DNS:
+Production and preview EAS profiles point at the live API:
 
 ```bash
 # .env / eas.json env
-EXPO_PUBLIC_API_URL=https://YOUR-SERVICE.up.railway.app
+EXPO_PUBLIC_API_URL=https://arsalandev.studio
 ```
 
 ---
@@ -79,7 +79,7 @@ eas build --profile production --platform ios
 eas submit --platform ios   # after Apple credentials configured
 ```
 
-`eas.json` already has development / preview / production profiles. Update preview `EXPO_PUBLIC_API_URL` to your Railway domain.
+`eas.json` already has development / preview / production profiles. Preview and production use `https://arsalandev.studio`.
 
 ### Fastlane
 
