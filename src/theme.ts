@@ -1,14 +1,14 @@
-/** Night atelier — deep ink + brass accent; mirrors web. */
+/** Clean white studio — mirrors web globals.css. */
 export const colors = {
-  bg: "#0b0d12",
-  elevated: "#141820",
-  ink: "#eceef3",
-  muted: "#939aa8",
-  accent: "#d4a45a",
-  accentSoft: "#e0b56e",
-  sage: "#7a9e8c",
-  line: "rgba(236, 238, 243, 0.1)",
-  onAccent: "#0c0e12",
-  danger: "#e07a7a",
-  accentWash: "rgba(212, 164, 90, 0.14)",
+  bg: "#ffffff",
+  elevated: "#f4f6f8",
+  ink: "#0f1419",
+  muted: "#5a6573",
+  accent: "#0f5c6e",
+  accentSoft: "#147a90",
+  sage: "#3d7a62",
+  line: "rgba(15, 20, 25, 0.1)",
+  danger: "#c43c3c",
+  onAccent: "#ffffff",
+  accentWash: "rgba(15, 92, 110, 0.08)",
 } as const;
