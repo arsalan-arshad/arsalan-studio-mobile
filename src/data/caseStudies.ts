@@ -8,6 +8,9 @@ export type CaseStudy = {
   liveUrl?: string;
   liveLabel?: string;
   demoUrl?: string;
+  demoLabel?: string;
+  youtubeUrl?: string;
+  youtubeLabel?: string;
 };
 
 const WEB = process.env.EXPO_PUBLIC_API_URL ?? "https://arsalandev.studio";
@@ -30,6 +33,7 @@ export const caseStudies: CaseStudy[] = [
     status: "Coming soon",
     blurb: "Salesforce pipeline as forward demand in Shopify forecasts.",
     githubUrl: "https://github.com/arsalan-arshad/pipeline-aware-forecast",
+    youtubeUrl: "https://www.youtube.com/watch?v=DpOLWprYx7g",
   },
   {
     id: "bridge",
@@ -37,6 +41,8 @@ export const caseStudies: CaseStudy[] = [
     category: "Shopify",
     status: "Coming soon",
     blurb: "Narrow Shopify → Salesforce recipes on a small shared core.",
+    githubUrl: "https://github.com/arsalan-arshad/bridge-recipes",
+    youtubeUrl: "https://www.youtube.com/watch?v=vGMt_7cxuKg",
   },
   {
     id: "protocols",
@@ -44,6 +50,10 @@ export const caseStudies: CaseStudy[] = [
     category: "Shopify",
     status: "Coming soon",
     blurb: "Protocols by link/QR with one-tap add-to-cart.",
+    githubUrl: "https://github.com/arsalan-arshad/practitioner-protocols",
+    demoUrl: "https://practitioner-protocols-production.up.railway.app/demo",
+    demoLabel: "Demo",
+    youtubeUrl: "https://www.youtube.com/watch?v=m0nlmLj-RKE",
   },
   {
     id: "mcp",

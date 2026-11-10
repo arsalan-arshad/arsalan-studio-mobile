@@ -55,7 +55,12 @@ export default function WorkScreen() {
           ) : null}
           {item.demoUrl ? (
             <Pressable onPress={() => Linking.openURL(item.demoUrl!)}>
-              <Text style={styles.link}>Demo</Text>
+              <Text style={styles.link}>{item.demoLabel ?? "Demo"}</Text>
+            </Pressable>
+          ) : null}
+          {item.youtubeUrl ? (
+            <Pressable onPress={() => Linking.openURL(item.youtubeUrl!)}>
+              <Text style={styles.link}>{item.youtubeLabel ?? "YouTube"}</Text>
             </Pressable>
           ) : null}
         </View>
@@ -67,8 +72,8 @@ export default function WorkScreen() {
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Case studies</Text>
       <Text style={styles.sub}>
-        Tap a title for the full case study. GitHub / Live / Demo stay separate.
-        Open source (MIT) where noted — PRs welcome.
+        Tap a title for the full case study. GitHub / Live / Demo / YouTube stay
+        separate. Open source (MIT) where noted — PRs welcome.
       </Text>
 
       <Text style={styles.section}>Salesforce · full suite</Text>

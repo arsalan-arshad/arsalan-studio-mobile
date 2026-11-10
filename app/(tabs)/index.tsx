@@ -13,7 +13,7 @@ import { caseStudies } from "../../src/data/caseStudies";
 import { presenceLinks } from "../../src/data/links";
 import { colors } from "../../src/theme";
 
-const FEATURED_IDS = ["ai-forecast", "mcp", "smart-cloner", "hub"];
+const FEATURED_IDS = ["ai-forecast", "mcp", "protocols", "smart-cloner", "hub"];
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -54,13 +54,15 @@ export default function HomeScreen() {
       <Text style={styles.section}>Featured work</Text>
       {featured.map((item) => {
         const icon = getBrandIcon(item.id);
+        const hasLinks = Boolean(
+          item.demoUrl || item.youtubeUrl || item.liveUrl || item.githubUrl,
+        );
         return (
-          <Pressable
-            key={item.id}
-            style={styles.feature}
-            onPress={() => router.push(`/work/${item.id}`)}
-          >
-            <View style={styles.featureRow}>
+          <View key={item.id} style={styles.feature}>
+            <Pressable
+              style={styles.featureRow}
+              onPress={() => router.push(`/work/${item.id}`)}
+            >
               {icon ? (
                 <Image source={icon} style={styles.featureIcon} resizeMode="contain" />
               ) : null}
@@ -71,8 +73,38 @@ export default function HomeScreen() {
                   {item.blurb}
                 </Text>
               </View>
-            </View>
-          </Pressable>
+            </Pressable>
+            {hasLinks ? (
+              <View style={styles.featureLinks}>
+                {item.demoUrl ? (
+                  <Pressable onPress={() => Linking.openURL(item.demoUrl!)}>
+                    <Text style={styles.featureLink}>
+                      {item.demoLabel ?? "Demo"}
+                    </Text>
+                  </Pressable>
+                ) : null}
+                {item.youtubeUrl ? (
+                  <Pressable onPress={() => Linking.openURL(item.youtubeUrl!)}>
+                    <Text style={styles.featureLink}>
+                      {item.youtubeLabel ?? "YouTube"}
+                    </Text>
+                  </Pressable>
+                ) : null}
+                {item.liveUrl ? (
+                  <Pressable onPress={() => Linking.openURL(item.liveUrl!)}>
+                    <Text style={styles.featureLink}>
+                      {item.liveLabel ?? "Live"}
+                    </Text>
+                  </Pressable>
+                ) : null}
+                {item.githubUrl ? (
+                  <Pressable onPress={() => Linking.openURL(item.githubUrl!)}>
+                    <Text style={styles.featureLink}>GitHub</Text>
+                  </Pressable>
+                ) : null}
+              </View>
+            ) : null}
+          </View>
         );
       })}
       <Link href="/work" asChild>
@@ -195,6 +227,14 @@ const styles = StyleSheet.create({
   },
   featureTitle: { marginTop: 2, color: colors.ink, fontSize: 16, fontWeight: "700" },
   featureBlurb: { marginTop: 4, color: colors.muted, fontSize: 13, lineHeight: 18 },
+  featureLinks: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 14,
+    paddingHorizontal: 14,
+    paddingBottom: 12,
+  },
+  featureLink: { color: colors.accent, fontSize: 13, fontWeight: "700" },
   seeAll: { marginBottom: 8, paddingVertical: 4 },
   seeAllText: { color: colors.accent, fontWeight: "700", fontSize: 14 },
   chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },

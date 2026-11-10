@@ -101,7 +101,12 @@ export default function WorkDetailScreen() {
           ) : null}
           {item.demoUrl ? (
             <Pressable onPress={() => Linking.openURL(item.demoUrl!)}>
-              <Text style={styles.link}>Demo</Text>
+              <Text style={styles.link}>{item.demoLabel ?? "Demo"}</Text>
+            </Pressable>
+          ) : null}
+          {item.youtubeUrl ? (
+            <Pressable onPress={() => Linking.openURL(item.youtubeUrl!)}>
+              <Text style={styles.link}>{item.youtubeLabel ?? "YouTube"}</Text>
             </Pressable>
           ) : null}
         </View>
