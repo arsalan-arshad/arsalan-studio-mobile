@@ -8,18 +8,21 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com"
       }
     },
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://arsalandev.studio"
+        "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com"
       }
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://arsalandev.studio"
+        "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com"
       }
     }
   },

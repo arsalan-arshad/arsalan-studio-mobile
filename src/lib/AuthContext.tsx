@@ -12,6 +12,7 @@ import {
   getStoredUser,
   getToken,
   login as apiLogin,
+  loginWithGoogleIdToken as apiLoginGoogle,
   logout as apiLogout,
   register as apiRegister,
 } from "./api";
@@ -24,6 +25,7 @@ type AuthContextValue = {
   isStaff: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 };
@@ -63,6 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       async register(name, email, password) {
         const u = await apiRegister(name, email, password);
+        setUser(u);
+      },
+      async loginWithGoogle(idToken) {
+        const u = await apiLoginGoogle(idToken);
         setUser(u);
       },
       async logout() {

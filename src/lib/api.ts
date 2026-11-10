@@ -112,6 +112,7 @@ function isAuthPath(path: string) {
   return (
     path.startsWith("/api/auth/token") ||
     path.startsWith("/api/auth/register") ||
+    path.startsWith("/api/auth/google") ||
     path.startsWith("/api/auth/refresh") ||
     path.startsWith("/api/auth/logout")
   );
@@ -162,6 +163,33 @@ export async function register(name: string, email: string, password: string) {
   if (!access || !data.user) throw new Error("Register failed");
   await setSession(access, data.user, data.refreshToken);
   return data.user as AuthUser;
+}
+
+/** Exchange a Google ID token for studio Bearer tokens. */
+export async function loginWithGoogleIdToken(idToken: string) {
+  const { res, data } = await apiFetch("/api/auth/google", {
+    method: "POST",
+    body: JSON.stringify({ idToken }),
+  });
+  if (!res.ok) throw new Error(data.error || "Google sign-in failed");
+  const access = pickAccessToken(data);
+  if (!access || !data.user) throw new Error("Google sign-in failed");
+  await setSession(access, data.user, data.refreshToken);
+  return data.user as AuthUser;
+}
+
+export function getGoogleClientIds() {
+  return {
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID?.trim() || "",
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID?.trim() || "",
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID?.trim() || "",
+  };
+}
+
+export function isGoogleSignInConfigured() {
+  const { webClientId, iosClientId, androidClientId } = getGoogleClientIds();
+  // Web client ID is required for id_token audience; platform IDs optional for Expo Go.
+  return Boolean(webClientId || iosClientId || androidClientId);
 }
 
 export async function logout() {
