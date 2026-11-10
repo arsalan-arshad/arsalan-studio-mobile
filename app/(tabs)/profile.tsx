@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { GoogleSignInButton } from "../../src/components/GoogleSignInButton";
 import { presenceLinks } from "../../src/data/links";
 import { useAuth } from "../../src/lib/AuthContext";
 import { getApiBase } from "../../src/lib/api";
@@ -110,13 +111,11 @@ export default function ProfileScreen() {
           {mode === "signup" ? (
             <Text style={styles.hint}>
               Min 10 characters with uppercase, lowercase, a number, and a
-              special character. Google sign-in is available on the website
-              only for now.
+              special character.
             </Text>
           ) : (
             <Text style={styles.hint}>
-              Forgot password? Reset on the website (arsalandev.studio). Google
-              OAuth is web-only for now.
+              Forgot password? Reset on the website (arsalandev.studio).
             </Text>
           )}
           {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -125,6 +124,10 @@ export default function ProfileScreen() {
               {busy ? "Please wait…" : mode === "login" ? "Log in" : "Sign up"}
             </Text>
           </Pressable>
+          <GoogleSignInButton
+            disabled={busy}
+            onError={(msg) => setError(msg)}
+          />
           <Pressable
             style={styles.ghost}
             onPress={() => setMode(mode === "login" ? "signup" : "login")}
@@ -139,13 +142,14 @@ export default function ProfileScreen() {
       <View style={[styles.box, { marginTop: 12 }]}>
         <Text style={styles.boxTitle}>Studio note</Text>
         <Text style={styles.boxBody}>
-          Formerly Digitize Turf (Clutch profile for past agency work). Brand is
-          now Arsalan Arshad studio at arsalandev.studio.
+          Digitize Turf was an earlier personal brand I built for myself — not an
+          agency. Clutch reviews remain on that profile. Brand is now Arsalan
+          Arshad studio at arsalandev.studio.
         </Text>
         <Pressable
           onPress={() => Linking.openURL("https://clutch.co/profile/digitize-turf")}
         >
-          <Text style={styles.link}>Clutch · Digitize Turf</Text>
+          <Text style={styles.link}>Clutch · Digitize Turf reviews</Text>
         </Pressable>
       </View>
 
