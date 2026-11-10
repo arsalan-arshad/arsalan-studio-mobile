@@ -57,6 +57,14 @@ export const brandAssets: Record<
     icon: require("../../assets/brands/other/sme-automation/icon.png"),
     banner: require("../../assets/brands/other/sme-automation/banner.png"),
   },
+  "eu-ai-act": {
+    icon: require("../../assets/brands/other/eu-ai-act-checker/icon.png"),
+    banner: require("../../assets/brands/other/eu-ai-act-checker/banner.png"),
+  },
+  freight: {
+    icon: require("../../assets/brands/other/freight-exceptions/icon.png"),
+    banner: require("../../assets/brands/other/freight-exceptions/banner.png"),
+  },
 };
 
 const WEB = "https://arsalandev.studio";
@@ -114,6 +122,14 @@ export const remoteBrandPaths: Record<string, { icon: string; banner: string }> 
   sme: {
     icon: `${WEB}/brands/other/sme-automation/icon.png`,
     banner: `${WEB}/brands/other/sme-automation/banner.png`,
+  },
+  "eu-ai-act": {
+    icon: `${WEB}/brands/other/eu-ai-act-checker/icon.png`,
+    banner: `${WEB}/brands/other/eu-ai-act-checker/banner.png`,
+  },
+  freight: {
+    icon: `${WEB}/brands/other/freight-exceptions/icon.png`,
+    banner: `${WEB}/brands/other/freight-exceptions/banner.png`,
   },
 };
 

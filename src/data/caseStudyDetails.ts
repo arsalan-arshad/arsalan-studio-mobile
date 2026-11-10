@@ -133,4 +133,28 @@ export const details: Record<string, MobileDetail> = {
     openSource: "MIT recipes when published.",
     buildingNote: "No clients yet — conversation-first.",
   },
+  "eu-ai-act": {
+    id: "eu-ai-act",
+    summary:
+      "Open scanner for public-site AI Act transparency basics + optional paid audit report.",
+    problem:
+      "Site owners need a technical transparency check — without pretending it is legal advice.",
+    solution:
+      "Public GitHub scanner (ai-act-check) for disclosure basics; paid report path when demand is clear.",
+    audience: "Site operators and agencies needing a technical checklist.",
+    features: ["Technical check framing", "Not legal advice", "Public GitHub"],
+    openSource: "MIT — github.com/arsalan-arshad/ai-act-check",
+    buildingNote: "Repo is public; marketplace listing / paid report still coming soon.",
+  },
+  freight: {
+    id: "freight",
+    summary:
+      "Deterministic shipment-exception rules for small brokers/3PLs; AI drafts, humans approve.",
+    problem: "Exception handling is manual and error-prone for small brokers.",
+    solution: "Rules first; AI only extracts/drafts; humans approve.",
+    audience: "Small freight brokers and 3PLs.",
+    features: ["Rules-first design", "Human approval loop", "Public GitHub"],
+    openSource: "MIT — github.com/arsalan-arshad/freight-exceptions",
+    buildingNote: "Repo is public; production broker product still gated on conversations.",
+  },
 };

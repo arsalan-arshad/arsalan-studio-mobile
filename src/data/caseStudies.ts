@@ -152,4 +152,22 @@ export const caseStudies: CaseStudy[] = [
     status: "Coming soon / launching",
     blurb: "Fixed-scope WhatsApp / ERP / commerce automation.",
   },
+  {
+    id: "eu-ai-act",
+    title: "EU AI Act Checker",
+    category: "Other",
+    status: "Coming soon",
+    blurb:
+      "Open scanner for public-site AI Act transparency basics + paid audit report. Technical check, not legal advice.",
+    githubUrl: "https://github.com/arsalan-arshad/ai-act-check",
+  },
+  {
+    id: "freight",
+    title: "Freight Exceptions",
+    category: "Other",
+    status: "Coming soon",
+    blurb:
+      "Deterministic exception rules for small brokers/3PLs — AI extracts and drafts; humans approve.",
+    githubUrl: "https://github.com/arsalan-arshad/freight-exceptions",
+  },
 ];
