@@ -8,9 +8,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
+import { getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { experience } from "../../src/data/experience";
+import { pastServices, studioFraming } from "../../src/data/studio";
 import { colors } from "../../src/theme";
 
 export default function WorkScreen() {
@@ -20,14 +21,10 @@ export default function WorkScreen() {
 
   function Row({ item }: { item: (typeof caseStudies)[number] }) {
     const icon = getBrandIcon(item.id);
-    const banner = getBrandBanner(item.id);
 
     return (
       <View style={styles.row}>
         <Pressable onPress={() => router.push(`/work/${item.id}`)}>
-          {banner ? (
-            <Image source={banner} style={styles.banner} resizeMode="cover" />
-          ) : null}
           <View style={styles.heading}>
             {icon ? (
               <Image source={icon} style={styles.icon} resizeMode="contain" />
@@ -86,6 +83,28 @@ export default function WorkScreen() {
 
       <Text style={[styles.title, { marginTop: 28 }]}>Jobs & experience</Text>
       <Text style={styles.sub}>Worker history from the resume — not hiring.</Text>
+
+      <View style={styles.studioCard}>
+        <Text style={styles.studioHeadline}>{studioFraming.headline}</Text>
+        <Text style={styles.blurb}>{studioFraming.body}</Text>
+        {studioFraming.bullets.map((b) => (
+          <Text key={b} style={styles.bullet}>
+            · {b}
+          </Text>
+        ))}
+        {pastServices.map((service) => (
+          <View key={service.title} style={styles.serviceBlock}>
+            <Text style={styles.serviceTitle}>{service.title}</Text>
+            <Text style={styles.blurb}>{service.body}</Text>
+          </View>
+        ))}
+        <Pressable
+          onPress={() => Linking.openURL("https://clutch.co/profile/digitize-turf")}
+        >
+          <Text style={styles.link}>Clutch · Digitize Turf →</Text>
+        </Pressable>
+      </View>
+
       {experience.map((job) => (
         <View key={job.id} style={styles.row}>
           <Text style={styles.status}>{job.period}</Text>
@@ -117,13 +136,23 @@ const styles = StyleSheet.create({
     borderTopColor: colors.line,
     paddingVertical: 16,
   },
-  banner: {
-    width: "100%",
-    height: 120,
+  studioCard: {
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: 8,
-    marginBottom: 12,
+    padding: 14,
+    marginBottom: 8,
     backgroundColor: colors.elevated,
   },
+  studioHeadline: {
+    color: colors.ink,
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 6,
+  },
+  bullet: { marginTop: 6, color: colors.ink, fontSize: 13, lineHeight: 19 },
+  serviceBlock: { marginTop: 12 },
+  serviceTitle: { color: colors.ink, fontSize: 14, fontWeight: "700" },
   heading: { flexDirection: "row", alignItems: "center", gap: 12 },
   headingText: { flex: 1, minWidth: 0 },
   icon: {
@@ -141,5 +170,5 @@ const styles = StyleSheet.create({
   blurb: { marginTop: 8, color: colors.muted, fontSize: 14, lineHeight: 20 },
   know: { marginTop: 10, color: colors.accent, fontWeight: "700", fontSize: 14 },
   links: { flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 8 },
-  link: { color: colors.muted, fontSize: 13, fontWeight: "600" },
+  link: { marginTop: 12, color: colors.accent, fontSize: 13, fontWeight: "700" },
 });

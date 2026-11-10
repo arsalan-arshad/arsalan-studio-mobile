@@ -17,7 +17,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "studio.arsalan.app",
       "buildNumber": "1",
-      "associatedDomains": ["applinks:arsalandev.studio"]
+      "associatedDomains": [
+        "applinks:arsalandev.studio"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -39,7 +41,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -47,7 +52,10 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true
     },

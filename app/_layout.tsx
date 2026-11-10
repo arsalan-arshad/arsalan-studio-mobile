@@ -13,12 +13,22 @@ export default function RootLayout() {
           headerTintColor: colors.ink,
           headerTitleStyle: { fontWeight: "700" },
           contentStyle: { backgroundColor: colors.bg },
+          // Avoid iOS back label showing the route group name "(tabs)".
+          headerBackButtonDisplayMode: "minimal",
+          headerBackTitle: "Back",
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(tabs)"
+          options={{ headerShown: false, title: "Work", headerBackTitle: "Work" }}
+        />
         <Stack.Screen
           name="work/[id]"
-          options={{ title: "Case study", presentation: "card" }}
+          options={{
+            title: "Case study",
+            presentation: "card",
+            headerBackTitle: "Work",
+          }}
         />
       </Stack>
     </AuthProvider>

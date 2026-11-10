@@ -34,20 +34,33 @@ export default function WorkDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: item.title }} />
+      <Stack.Screen
+        options={{
+          title: item.title,
+          headerBackTitle: "Work",
+          headerBackButtonDisplayMode: "minimal",
+        }}
+      />
       <ScrollView style={styles.root} contentContainerStyle={styles.content}>
         {banner ? (
-          <Image source={banner} style={styles.banner} resizeMode="cover" />
-        ) : null}
-        <View style={styles.heading}>
-          {icon ? (
+          <View style={styles.bannerFrame}>
+            <Image source={banner} style={styles.banner} resizeMode="contain" />
+          </View>
+        ) : icon ? (
+          <View style={styles.heading}>
             <Image source={icon} style={styles.icon} resizeMode="contain" />
-          ) : null}
+            <View style={styles.headingText}>
+              <Text style={styles.status}>{item.status}</Text>
+              <Text style={styles.title}>{item.title}</Text>
+            </View>
+          </View>
+        ) : (
           <View style={styles.headingText}>
             <Text style={styles.status}>{item.status}</Text>
             <Text style={styles.title}>{item.title}</Text>
           </View>
-        </View>
+        )}
+        {banner ? <Text style={styles.status}>{item.status}</Text> : null}
         <Text style={styles.blurb}>{detail?.summary ?? item.blurb}</Text>
 
         <Text style={styles.h2}>Problem → Solution</Text>
@@ -100,14 +113,22 @@ export default function WorkDetailScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 48 },
+  bannerFrame: {
+    width: "100%",
+    aspectRatio: 1600 / 420,
+    maxHeight: 180,
+    borderRadius: 10,
+    marginBottom: 12,
+    overflow: "hidden",
+    backgroundColor: colors.elevated,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   banner: {
     width: "100%",
-    height: 160,
-    borderRadius: 10,
-    marginBottom: 16,
-    backgroundColor: colors.elevated,
+    height: "100%",
   },
-  heading: { flexDirection: "row", alignItems: "center", gap: 12 },
+  heading: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 4 },
   headingText: { flex: 1, minWidth: 0 },
   icon: {
     width: 52,
@@ -129,7 +150,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: -0.5,
   },
-  blurb: { marginTop: 12, color: colors.muted, fontSize: 15, lineHeight: 22 },
+  blurb: { marginTop: 10, color: colors.muted, fontSize: 15, lineHeight: 22 },
   h2: {
     marginTop: 24,
     marginBottom: 8,

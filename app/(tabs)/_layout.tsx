@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs, useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
-import { Platform, Text, type ColorValue } from "react-native";
+import { Platform, type ColorValue, type TextStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BrandHeaderTitle } from "../../src/components/BrandHeaderTitle";
 import { useAuth } from "../../src/lib/AuthContext";
@@ -9,34 +9,22 @@ import { colors } from "../../src/theme";
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-function TabLabel({ label, color }: { label: string; color: ColorValue }) {
-  return (
-    <Text
-      numberOfLines={1}
-      allowFontScaling={false}
-      style={{
-        fontSize: 10,
-        lineHeight: 12,
-        fontWeight: "600",
-        color,
-        marginTop: 2,
-        textAlign: "center",
-      }}
-    >
-      {label}
-    </Text>
-  );
-}
-
 function tabIcon(name: IconName) {
   return ({ color, size }: { color: ColorValue; size: number }) => (
     <Ionicons
       name={name}
       size={size ?? 22}
-      color={(color as string | undefined) ?? colors.muted}
+      color={(color as string | undefined) || colors.muted}
     />
   );
 }
+
+const labelStyle: TextStyle = {
+  fontSize: 10,
+  fontWeight: "600",
+  marginTop: 2,
+  ...(Platform.OS === "android" ? { includeFontPadding: false } : null),
+};
 
 export default function TabsLayout() {
   const { user, loading } = useAuth();
@@ -53,8 +41,8 @@ export default function TabsLayout() {
     }
   }, [loading, user, router]);
 
-  const bottomPad = Math.max(insets.bottom, Platform.OS === "ios" ? 8 : 6);
-  const tabBarHeight = 52 + bottomPad;
+  const bottomPad = Math.max(insets.bottom, Platform.OS === "ios" ? 8 : 10);
+  const tabBarHeight = (Platform.OS === "android" ? 58 : 54) + bottomPad;
 
   return (
     <Tabs
@@ -72,8 +60,14 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.muted,
         tabBarShowLabel: true,
+        tabBarHideOnKeyboard: true,
         tabBarLabelPosition: "below-icon",
-        tabBarItemStyle: { paddingTop: 2 },
+        tabBarLabelStyle: labelStyle,
+        tabBarItemStyle: {
+          paddingTop: 2,
+          paddingBottom: Platform.OS === "android" ? 2 : 0,
+        },
+        tabBarAllowFontScaling: false,
       }}
     >
       <Tabs.Screen
@@ -81,7 +75,7 @@ export default function TabsLayout() {
         options={{
           title: "Home",
           headerTitle: () => <BrandHeaderTitle title="Arsalan Arshad" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Home" color={color} />,
+          tabBarLabel: "Home",
           tabBarIcon: tabIcon("home-outline"),
         }}
       />
@@ -90,7 +84,7 @@ export default function TabsLayout() {
         options={{
           title: "Work",
           headerTitle: () => <BrandHeaderTitle title="Work" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Work" color={color} />,
+          tabBarLabel: "Work",
           tabBarIcon: tabIcon("briefcase-outline"),
         }}
       />
@@ -99,7 +93,7 @@ export default function TabsLayout() {
         options={{
           title: "Offers",
           headerTitle: () => <BrandHeaderTitle title="Offers" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Offers" color={color} />,
+          tabBarLabel: "Offers",
           tabBarIcon: tabIcon("pricetag-outline"),
         }}
       />
@@ -108,7 +102,7 @@ export default function TabsLayout() {
         options={{
           title: "Chat",
           headerTitle: () => <BrandHeaderTitle title="Chat" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Chat" color={color} />,
+          tabBarLabel: "Chat",
           tabBarIcon: tabIcon("chatbubbles-outline"),
         }}
       />
@@ -117,7 +111,7 @@ export default function TabsLayout() {
         options={{
           title: "Contact",
           headerTitle: () => <BrandHeaderTitle title="Contact" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Contact" color={color} />,
+          tabBarLabel: "Contact",
           tabBarIcon: tabIcon("mail-outline"),
         }}
       />
@@ -126,7 +120,7 @@ export default function TabsLayout() {
         options={{
           title: "Account",
           headerTitle: () => <BrandHeaderTitle title="Account" />,
-          tabBarLabel: ({ color }) => <TabLabel label="Account" color={color} />,
+          tabBarLabel: "Account",
           tabBarIcon: tabIcon("person-outline"),
         }}
       />

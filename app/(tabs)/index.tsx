@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
+import { getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { presenceLinks } from "../../src/data/links";
 import { colors } from "../../src/theme";
@@ -54,16 +54,12 @@ export default function HomeScreen() {
       <Text style={styles.section}>Featured work</Text>
       {featured.map((item) => {
         const icon = getBrandIcon(item.id);
-        const banner = getBrandBanner(item.id);
         return (
           <Pressable
             key={item.id}
             style={styles.feature}
             onPress={() => router.push(`/work/${item.id}`)}
           >
-            {banner ? (
-              <Image source={banner} style={styles.featureBanner} resizeMode="cover" />
-            ) : null}
             <View style={styles.featureRow}>
               {icon ? (
                 <Image source={icon} style={styles.featureIcon} resizeMode="contain" />
@@ -176,17 +172,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: colors.elevated,
   },
-  featureBanner: { width: "100%", height: 110, backgroundColor: colors.bg },
   featureRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    padding: 12,
+    padding: 14,
   },
   featureIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 10,
     backgroundColor: colors.bg,
   },
   featureCopy: { flex: 1, minWidth: 0 },
