@@ -13,7 +13,14 @@ import { caseStudies } from "../../src/data/caseStudies";
 import { presenceLinks } from "../../src/data/links";
 import { colors } from "../../src/theme";
 
-const FEATURED_IDS = ["ai-forecast", "protocols", "mcp", "smart-cloner", "hub"];
+const FEATURED_IDS = [
+  "ai-forecast",
+  "protocols",
+  "mcp",
+  "smart-cloner",
+  "hub",
+  "proposal-guard",
+];
 
 export default function HomeScreen() {
   const router = useRouter();

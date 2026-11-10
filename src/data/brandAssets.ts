@@ -53,6 +53,10 @@ export const brandAssets: Record<
     icon: require("../../assets/brands/other/influencer-hub/icon.png"),
     banner: require("../../assets/brands/other/influencer-hub/banner.png"),
   },
+  "proposal-guard": {
+    icon: require("../../assets/brands/other/proposal-guard/icon.png"),
+    banner: require("../../assets/brands/other/proposal-guard/banner.png"),
+  },
   sme: {
     icon: require("../../assets/brands/other/sme-automation/icon.png"),
     banner: require("../../assets/brands/other/sme-automation/banner.png"),
@@ -118,6 +122,10 @@ export const remoteBrandPaths: Record<string, { icon: string; banner: string }> 
   hub: {
     icon: `${WEB}/brands/other/influencer-hub/icon.png`,
     banner: `${WEB}/brands/other/influencer-hub/banner.png`,
+  },
+  "proposal-guard": {
+    icon: `${WEB}/brands/other/proposal-guard/icon.png`,
+    banner: `${WEB}/brands/other/proposal-guard/banner.png`,
   },
   sme: {
     icon: `${WEB}/brands/other/sme-automation/icon.png`,

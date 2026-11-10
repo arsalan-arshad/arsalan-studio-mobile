@@ -146,6 +146,17 @@ export const caseStudies: CaseStudy[] = [
     liveLabel: "Live",
   },
   {
+    id: "proposal-guard",
+    title: "Proposal Guard",
+    category: "Other",
+    status: "Live",
+    blurb:
+      "Deterministic, offline scope-creep checker for proposals and SOWs. Not legal advice.",
+    liveUrl: "https://proposal-guard-production.up.railway.app/",
+    liveLabel: "Live",
+    githubUrl: "https://github.com/arsalan-arshad/proposal-guard",
+  },
+  {
     id: "sme",
     title: "SME Automation Services",
     category: "Other",

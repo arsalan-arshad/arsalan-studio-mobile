@@ -28,15 +28,17 @@ Open source PRs are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 | Email + password | Yes (`POST /api/auth/token`, `/register`) | Yes (Auth.js credentials) |
 | Strong password (10+, upper/lower/number/special) | Enforced by API on signup | Same + UI hint |
 | Forgot / reset password | Use **website** `/forgot-password` | Full flow + Resend |
-| Google OAuth | Expo AuthSession → `POST /api/auth/google` (needs client IDs + deployed API) | Auth.js Google when `AUTH_GOOGLE_*` set |
+| Google OAuth | Native iOS/Android Sign-In → `id_token` → `POST /api/auth/google` (Dev Client / EAS) | Auth.js Google when `AUTH_GOOGLE_*` set |
 | Access JWT + refresh | Yes (1h / 30d rotate) | Cookie session on web |
 
-### Google on mobile
+### Google on mobile (native)
 
-1. Create Google OAuth client IDs (Web + optional iOS/Android).
-2. Set on mobile: `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` (and platform IDs if needed).
-3. Set on web: `AUTH_GOOGLE_ID` (same web client) plus any platform audiences (`AUTH_GOOGLE_IOS_ID`, etc.).
-4. Deploy web so `POST /api/auth/google` is live, then reload the Expo app.
+Uses `@react-native-google-signin/google-signin` — **no** `/oauth/mobile-google` browser bridge.
+
+1. Google Cloud → create **Web**, **iOS** (`studio.arsalan.app`), and **Android** (`studio.arsalan.app` + SHA-1) OAuth clients.
+2. Mobile env: `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` (see `.env.example`).
+3. Web env: `AUTH_GOOGLE_ID` (web) plus `AUTH_GOOGLE_IOS_ID` / `AUTH_GOOGLE_ANDROID_ID` (or `AUTH_GOOGLE_CLIENT_IDS`).
+4. Rebuild a Dev Client / store binary after setting the iOS client (config plugin `iosUrlScheme`).
 
 ---
 

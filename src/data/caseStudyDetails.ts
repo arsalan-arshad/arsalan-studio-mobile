@@ -123,6 +123,23 @@ export const details: Record<string, MobileDetail> = {
     features: ["Campaign tags", "App cards", "Privacy page"],
     openSource: "Hub is ops surface; linked product repos stay MIT.",
   },
+  "proposal-guard": {
+    id: "proposal-guard",
+    summary:
+      "Deterministic, offline scope-creep checker for proposals and SOWs — quotes the sentence, names the rule, suggests a fill-in-the-blanks fix.",
+    problem:
+      "Proposal wording quietly invites extra work: “etc.”, unlimited revisions, approvals with no deadline, unpaid cloud bills.",
+    solution:
+      "Fixed TypeScript rules (no model): SCOPE-01, TIME-03, HOST-02, REVISE-04. Offline, stores nothing. Not legal advice.",
+    audience: "Freelancers and small studios checking drafts before send.",
+    features: [
+      "Quoted finding + why + blanked suggestion",
+      "CLI, library, local MCP",
+      "Live Railway demo",
+      "MIT + published evaluation misses",
+    ],
+    openSource: "MIT — https://github.com/arsalan-arshad/proposal-guard",
+  },
   sme: {
     id: "sme",
     summary: "Fixed-scope SME automation services (hypotheses).",

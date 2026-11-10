@@ -1,6 +1,9 @@
-import * as Google from "expo-auth-session/providers/google";
-import { makeRedirectUri } from "expo-auth-session";
-import * as WebBrowser from "expo-web-browser";
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  isSuccessResponse,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Platform, Pressable, StyleSheet, Text } from "react-native";
 import {
@@ -10,118 +13,71 @@ import {
 import { useAuth } from "../lib/AuthContext";
 import { colors } from "../theme";
 
-WebBrowser.maybeCompleteAuthSession();
-
-/** Matches app.json `scheme` — add this URI on the Google Web OAuth client. */
-const GOOGLE_REDIRECT_URI = makeRedirectUri({
-  scheme: "arsalanstudio",
-  path: "oauthredirect",
-});
-
 type Props = {
   onError?: (message: string) => void;
   disabled?: boolean;
 };
 
-function formatGoogleAuthError(response: {
-  type: string;
-  errorCode?: string | null;
-  params?: Record<string, string>;
-  error?: { message?: string; code?: string } | null;
-}): string {
-  const params = response.params ?? {};
-  const code = (
-    params.error ||
-    response.errorCode ||
-    response.error?.code ||
-    ""
-  ).toLowerCase();
-  const description = (
-    params.error_description ||
-    params.error_message ||
-    response.error?.message ||
-    ""
-  ).replace(/\+/g, " ");
+let configuredNative = false;
 
-  if (
-    code === "access_denied" ||
-    /access.?blocked|access_denied|app.?is.?blocked/i.test(description)
-  ) {
+function ensureGoogleConfigured() {
+  if (configuredNative) return;
+  const { webClientId, iosClientId } = getGoogleClientIds();
+  GoogleSignin.configure({
+    // Web client ID → id_token.aud the API accepts via AUTH_GOOGLE_ID.
+    webClientId: webClientId || undefined,
+    // iOS OAuth client (bundle studio.arsalan.app). Required without Firebase plist.
+    iosClientId: iosClientId || undefined,
+    offlineAccess: false,
+  });
+  configuredNative = true;
+}
+
+function formatNativeGoogleError(e: unknown): string {
+  if (isErrorWithCode(e)) {
+    switch (e.code) {
+      case statusCodes.SIGN_IN_CANCELLED:
+        return "";
+      case statusCodes.IN_PROGRESS:
+        return "Google sign-in is already in progress.";
+      case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+        return "Google Play Services is missing or out of date on this device.";
+      default:
+        break;
+    }
+  }
+  const message = e instanceof Error ? e.message : "Google sign-in failed";
+  if (/access.?blocked|access_denied|403/i.test(message)) {
     return (
-      "Google AccessBlocked: OAuth consent is likely in Testing without your Google account as a Test user, " +
-      "or the redirect URI / client type is wrong for this build. " +
-      "In Google Cloud Console → OAuth consent screen: add your email under Test users (or publish the app). " +
-      `Authorized redirect URIs on the Web client must include ${GOOGLE_REDIRECT_URI}. ` +
-      "Prefer a Dev Client / store build over Expo Go for native Google sign-in."
+      "Google AccessBlocked: add your Google account as a Test user on the OAuth consent screen " +
+      "(or publish the app), and confirm AUTH_GOOGLE_ID / AUTH_GOOGLE_IOS_ID / AUTH_GOOGLE_ANDROID_ID match the clients used here."
     );
   }
-
-  if (code === "redirect_uri_mismatch" || /redirect.?uri/i.test(description)) {
+  if (/DEVELOPER_ERROR|ApiException:\s*10/i.test(message)) {
     return (
-      `Google redirect URI mismatch. Add ${GOOGLE_REDIRECT_URI} to the Web OAuth client's Authorized redirect URIs ` +
-      "(and iOS/Android clients if you set those IDs)."
+      "Google Android DEVELOPER_ERROR: create an Android OAuth client for package studio.arsalan.app " +
+      "with this build’s SHA-1 fingerprint, and set EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID to the Web client ID."
     );
   }
-
-  if (description) return description;
-  if (code) return `Google sign-in failed (${code}).`;
-  return "Google sign-in was cancelled or failed.";
+  return message;
 }
 
 export function GoogleSignInButton({ onError, disabled }: Props) {
   const { loginWithGoogle } = useAuth();
   const configured = isGoogleSignInConfigured();
-  const ids = getGoogleClientIds();
   const [busy, setBusy] = useState(false);
 
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    // Prefer web client for Expo AuthSession; platform IDs when present.
-    clientId: ids.webClientId || undefined,
-    iosClientId: ids.iosClientId || undefined,
-    androidClientId: ids.androidClientId || undefined,
-    webClientId: ids.webClientId || undefined,
-    redirectUri: GOOGLE_REDIRECT_URI,
-  });
-
   useEffect(() => {
-    let cancelled = false;
-    async function finish() {
-      if (!response) return;
-
-      if (response.type === "error" || response.type === "dismiss") {
-        if (response.type === "error" && !cancelled) {
-          onError?.(formatGoogleAuthError(response));
-        }
-        return;
-      }
-
-      if (response.type !== "success") return;
-
-      const idToken =
-        response.params.id_token ||
-        (response.authentication as { idToken?: string } | null)?.idToken;
-      if (!idToken) {
-        onError?.("Google did not return an ID token.");
-        return;
-      }
-      setBusy(true);
+    if (configured) {
       try {
-        await loginWithGoogle(idToken);
+        ensureGoogleConfigured();
       } catch (e) {
-        if (!cancelled) {
-          onError?.(e instanceof Error ? e.message : "Google sign-in failed");
+        if (__DEV__) {
+          console.warn("[Google auth] configure failed", e);
         }
-      } finally {
-        if (!cancelled) setBusy(false);
       }
     }
-    finish();
-    return () => {
-      cancelled = true;
-    };
-    // Intentionally depend on response only — parent onError is unstable.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response, loginWithGoogle]);
+  }, [configured]);
 
   if (!configured) {
     return (
@@ -129,7 +85,9 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
         style={styles.disabled}
         onPress={() =>
           onError?.(
-            "Set EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID (and optional iOS/Android client IDs). Server needs AUTH_GOOGLE_ID + POST /api/auth/google deployed.",
+            Platform.OS === "ios"
+              ? "Set EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID and EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID. Rebuild a Dev Client after creating the iOS OAuth client (bundle studio.arsalan.app)."
+              : "Set EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID and EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID. Create an Android OAuth client (package studio.arsalan.app + SHA-1) and rebuild.",
           )
         }
       >
@@ -140,21 +98,45 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
 
   return (
     <Pressable
-      style={[styles.btn, (disabled || busy || !request) && styles.btnDisabled]}
-      disabled={disabled || busy || !request}
+      style={[styles.btn, (disabled || busy) && styles.btnDisabled]}
+      disabled={disabled || busy}
       onPress={async () => {
         setBusy(true);
         onError?.("");
         try {
-          // Log redirect once in __DEV__ so Console URIs can be matched exactly.
+          ensureGoogleConfigured();
+          if (Platform.OS === "android") {
+            await GoogleSignin.hasPlayServices({
+              showPlayServicesUpdateDialog: true,
+            });
+          }
           if (__DEV__) {
             console.info(
-              `[Google auth] redirectUri=${GOOGLE_REDIRECT_URI} platform=${Platform.OS}`,
+              `[Google auth] native sign-in platform=${Platform.OS} (no /oauth/mobile-google bridge)`,
             );
           }
-          await promptAsync();
+          const response = await GoogleSignin.signIn();
+          if (!isSuccessResponse(response)) {
+            // cancelled
+            return;
+          }
+          const idToken = response.data.idToken;
+          if (!idToken) {
+            // Some Android builds need an extra token fetch after sign-in.
+            const tokens = await GoogleSignin.getTokens();
+            if (!tokens.idToken) {
+              onError?.(
+                "Google did not return an ID token. Confirm EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is the Web client ID (used as server client id).",
+              );
+              return;
+            }
+            await loginWithGoogle(tokens.idToken);
+            return;
+          }
+          await loginWithGoogle(idToken);
         } catch (e) {
-          onError?.(e instanceof Error ? e.message : "Google sign-in failed");
+          const msg = formatNativeGoogleError(e);
+          if (msg) onError?.(msg);
         } finally {
           setBusy(false);
         }
