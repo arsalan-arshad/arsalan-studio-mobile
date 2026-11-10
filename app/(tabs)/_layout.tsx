@@ -1,14 +1,26 @@
-import { Tabs } from "expo-router";
-import { Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs, useRouter } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Platform, Text, type ColorValue } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BrandHeaderTitle } from "../../src/components/BrandHeaderTitle";
+import { useAuth } from "../../src/lib/AuthContext";
 import { colors } from "../../src/theme";
 
-function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+type IconName = keyof typeof Ionicons.glyphMap;
+
+function TabLabel({ label, color }: { label: string; color: ColorValue }) {
   return (
     <Text
+      numberOfLines={1}
+      allowFontScaling={false}
       style={{
-        fontSize: 11,
-        fontWeight: focused ? "700" : "500",
-        color: focused ? colors.accent : colors.muted,
+        fontSize: 10,
+        lineHeight: 12,
+        fontWeight: "600",
+        color,
+        marginTop: 2,
+        textAlign: "center",
       }}
     >
       {label}
@@ -16,73 +28,106 @@ function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   );
 }
 
+function tabIcon(name: IconName) {
+  return ({ color, size }: { color: ColorValue; size: number }) => (
+    <Ionicons
+      name={name}
+      size={size ?? 22}
+      color={(color as string | undefined) ?? colors.muted}
+    />
+  );
+}
+
 export default function TabsLayout() {
+  const { user, loading } = useAuth();
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const didInitialRoute = useRef(false);
+
+  // Logged-in cold start → Chat (once per mount of tabs layout).
+  useEffect(() => {
+    if (loading || didInitialRoute.current) return;
+    didInitialRoute.current = true;
+    if (user) {
+      router.replace("/messages");
+    }
+  }, [loading, user, router]);
+
+  const bottomPad = Math.max(insets.bottom, Platform.OS === "ios" ? 8 : 6);
+  const tabBarHeight = 52 + bottomPad;
+
   return (
     <Tabs
       screenOptions={{
         headerStyle: { backgroundColor: colors.bg },
         headerTintColor: colors.ink,
-        headerTitleStyle: { fontWeight: "700" },
+        headerShadowVisible: false,
         tabBarStyle: {
           backgroundColor: colors.elevated,
           borderTopColor: colors.line,
-          height: 64,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: tabBarHeight,
+          paddingBottom: bottomPad,
+          paddingTop: 6,
         },
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.muted,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelPosition: "below-icon",
+        tabBarItemStyle: { paddingTop: 2 },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Arsalan Arshad",
-          tabBarIcon: ({ focused }) => <TabIcon label="Home" focused={focused} />,
+          title: "Home",
+          headerTitle: () => <BrandHeaderTitle title="Arsalan Arshad" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Home" color={color} />,
+          tabBarIcon: tabIcon("home-outline"),
         }}
       />
       <Tabs.Screen
         name="work"
         options={{
           title: "Work",
-          tabBarIcon: ({ focused }) => <TabIcon label="Work" focused={focused} />,
+          headerTitle: () => <BrandHeaderTitle title="Work" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Work" color={color} />,
+          tabBarIcon: tabIcon("briefcase-outline"),
         }}
       />
       <Tabs.Screen
         name="offers"
         options={{
           title: "Offers",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="Offers" focused={focused} />
-          ),
+          headerTitle: () => <BrandHeaderTitle title="Offers" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Offers" color={color} />,
+          tabBarIcon: tabIcon("pricetag-outline"),
         }}
       />
       <Tabs.Screen
         name="messages"
         options={{
-          title: "Messages",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="Chat" focused={focused} />
-          ),
+          title: "Chat",
+          headerTitle: () => <BrandHeaderTitle title="Chat" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Chat" color={color} />,
+          tabBarIcon: tabIcon("chatbubbles-outline"),
         }}
       />
       <Tabs.Screen
         name="contact"
         options={{
           title: "Contact",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="Contact" focused={focused} />
-          ),
+          headerTitle: () => <BrandHeaderTitle title="Contact" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Contact" color={color} />,
+          tabBarIcon: tabIcon("mail-outline"),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Account",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="Account" focused={focused} />
-          ),
+          headerTitle: () => <BrandHeaderTitle title="Account" />,
+          tabBarLabel: ({ color }) => <TabLabel label="Account" color={color} />,
+          tabBarIcon: tabIcon("person-outline"),
         }}
       />
     </Tabs>

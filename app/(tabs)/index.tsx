@@ -1,13 +1,39 @@
-import { Link } from "expo-router";
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+import {
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
+import { caseStudies } from "../../src/data/caseStudies";
 import { presenceLinks } from "../../src/data/links";
 import { colors } from "../../src/theme";
 
+const FEATURED_IDS = ["ai-forecast", "mcp", "smart-cloner", "hub"];
+
 export default function HomeScreen() {
+  const router = useRouter();
+  const featured = FEATURED_IDS.map((id) => caseStudies.find((c) => c.id === id)).filter(
+    Boolean,
+  ) as typeof caseStudies;
+
   return (
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-      <Text style={styles.eyebrow}>Marketplace · Sole builder</Text>
-      <Text style={styles.brand}>Arsalan Arshad</Text>
+      <View style={styles.heroBrand}>
+        <Image
+          source={require("../../assets/brand-mark.png")}
+          style={styles.mark}
+          accessibilityLabel="Arsalan Studio mark"
+        />
+        <View style={styles.heroText}>
+          <Text style={styles.eyebrow}>Marketplace · Sole builder</Text>
+          <Text style={styles.brand}>Arsalan Arshad</Text>
+        </View>
+      </View>
       <Text style={styles.lead}>
         One builder. Clear offers. Daily conversation until it ships. Inquire
         here — keep the thread alive in Messages.
@@ -24,6 +50,40 @@ export default function HomeScreen() {
           </Pressable>
         </Link>
       </View>
+
+      <Text style={styles.section}>Featured work</Text>
+      {featured.map((item) => {
+        const icon = getBrandIcon(item.id);
+        const banner = getBrandBanner(item.id);
+        return (
+          <Pressable
+            key={item.id}
+            style={styles.feature}
+            onPress={() => router.push(`/work/${item.id}`)}
+          >
+            {banner ? (
+              <Image source={banner} style={styles.featureBanner} resizeMode="cover" />
+            ) : null}
+            <View style={styles.featureRow}>
+              {icon ? (
+                <Image source={icon} style={styles.featureIcon} resizeMode="contain" />
+              ) : null}
+              <View style={styles.featureCopy}>
+                <Text style={styles.featureStatus}>{item.status}</Text>
+                <Text style={styles.featureTitle}>{item.title}</Text>
+                <Text style={styles.featureBlurb} numberOfLines={2}>
+                  {item.blurb}
+                </Text>
+              </View>
+            </View>
+          </Pressable>
+        );
+      })}
+      <Link href="/work" asChild>
+        <Pressable style={styles.seeAll}>
+          <Text style={styles.seeAllText}>See all case studies →</Text>
+        </Pressable>
+      </Link>
 
       <Text style={styles.section}>Also live on</Text>
       <View style={styles.chips}>
@@ -58,6 +118,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 48 },
+  heroBrand: { flexDirection: "row", alignItems: "center", gap: 14 },
+  mark: { width: 56, height: 56, borderRadius: 12 },
+  heroText: { flex: 1, minWidth: 0 },
   eyebrow: {
     color: colors.accent,
     fontSize: 11,
@@ -66,12 +129,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   brand: {
-    marginTop: 12,
+    marginTop: 4,
     color: colors.ink,
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: "700",
     letterSpacing: -1,
-    lineHeight: 44,
+    lineHeight: 36,
   },
   lead: {
     marginTop: 16,
@@ -105,6 +168,39 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "600",
   },
+  feature: {
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: colors.elevated,
+  },
+  featureBanner: { width: "100%", height: 110, backgroundColor: colors.bg },
+  featureRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    padding: 12,
+  },
+  featureIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: colors.bg,
+  },
+  featureCopy: { flex: 1, minWidth: 0 },
+  featureStatus: {
+    color: colors.accent,
+    fontSize: 10,
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    fontWeight: "700",
+  },
+  featureTitle: { marginTop: 2, color: colors.ink, fontSize: 16, fontWeight: "700" },
+  featureBlurb: { marginTop: 4, color: colors.muted, fontSize: 13, lineHeight: 18 },
+  seeAll: { marginBottom: 8, paddingVertical: 4 },
+  seeAllText: { color: colors.accent, fontWeight: "700", fontSize: 14 },
   chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   chip: {
     borderWidth: 1,

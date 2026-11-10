@@ -1,5 +1,14 @@
 import { useRouter } from "expo-router";
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { experience } from "../../src/data/experience";
 import { colors } from "../../src/theme";
@@ -10,14 +19,29 @@ export default function WorkScreen() {
   const other = caseStudies.filter((c) => c.category !== "Salesforce");
 
   function Row({ item }: { item: (typeof caseStudies)[number] }) {
+    const icon = getBrandIcon(item.id);
+    const banner = getBrandBanner(item.id);
+
     return (
       <View style={styles.row}>
         <Pressable onPress={() => router.push(`/work/${item.id}`)}>
-          <View style={styles.meta}>
-            <Text style={styles.cat}>{item.category}</Text>
-            <Text style={styles.status}>{item.status}</Text>
+          {banner ? (
+            <Image source={banner} style={styles.banner} resizeMode="cover" />
+          ) : null}
+          <View style={styles.heading}>
+            {icon ? (
+              <Image source={icon} style={styles.icon} resizeMode="contain" />
+            ) : (
+              <View style={[styles.icon, styles.iconFallback]} />
+            )}
+            <View style={styles.headingText}>
+              <View style={styles.meta}>
+                <Text style={styles.cat}>{item.category}</Text>
+                <Text style={styles.status}>{item.status}</Text>
+              </View>
+              <Text style={styles.name}>{item.title}</Text>
+            </View>
           </View>
-          <Text style={styles.name}>{item.title}</Text>
           <Text style={styles.blurb}>{item.blurb}</Text>
           <Text style={styles.know}>Know more →</Text>
         </Pressable>
@@ -93,12 +117,28 @@ const styles = StyleSheet.create({
     borderTopColor: colors.line,
     paddingVertical: 16,
   },
-  meta: { flexDirection: "row", gap: 10, marginBottom: 6 },
+  banner: {
+    width: "100%",
+    height: 120,
+    borderRadius: 8,
+    marginBottom: 12,
+    backgroundColor: colors.elevated,
+  },
+  heading: { flexDirection: "row", alignItems: "center", gap: 12 },
+  headingText: { flex: 1, minWidth: 0 },
+  icon: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    backgroundColor: colors.elevated,
+  },
+  iconFallback: { borderWidth: 1, borderColor: colors.line },
+  meta: { flexDirection: "row", gap: 10, marginBottom: 4 },
   cat: { color: colors.sage, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
   status: { color: colors.accent, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
   name: { color: colors.ink, fontSize: 18, fontWeight: "700" },
   org: { marginTop: 2, color: colors.ink, opacity: 0.8, fontSize: 14, fontWeight: "500" },
-  blurb: { marginTop: 6, color: colors.muted, fontSize: 14, lineHeight: 20 },
+  blurb: { marginTop: 8, color: colors.muted, fontSize: 14, lineHeight: 20 },
   know: { marginTop: 10, color: colors.accent, fontWeight: "700", fontSize: 14 },
   links: { flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 8 },
   link: { color: colors.muted, fontSize: 13, fontWeight: "600" },

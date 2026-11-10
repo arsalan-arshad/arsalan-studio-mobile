@@ -1,5 +1,14 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { details } from "../../src/data/caseStudyDetails";
 import { colors } from "../../src/theme";
@@ -9,6 +18,8 @@ export default function WorkDetailScreen() {
   const router = useRouter();
   const item = caseStudies.find((c) => c.id === id);
   const detail = id ? details[id] : undefined;
+  const icon = id ? getBrandIcon(id) : undefined;
+  const banner = id ? getBrandBanner(id) : undefined;
 
   if (!item) {
     return (
@@ -25,8 +36,18 @@ export default function WorkDetailScreen() {
     <>
       <Stack.Screen options={{ title: item.title }} />
       <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-        <Text style={styles.status}>{item.status}</Text>
-        <Text style={styles.title}>{item.title}</Text>
+        {banner ? (
+          <Image source={banner} style={styles.banner} resizeMode="cover" />
+        ) : null}
+        <View style={styles.heading}>
+          {icon ? (
+            <Image source={icon} style={styles.icon} resizeMode="contain" />
+          ) : null}
+          <View style={styles.headingText}>
+            <Text style={styles.status}>{item.status}</Text>
+            <Text style={styles.title}>{item.title}</Text>
+          </View>
+        </View>
         <Text style={styles.blurb}>{detail?.summary ?? item.blurb}</Text>
 
         <Text style={styles.h2}>Problem → Solution</Text>
@@ -79,6 +100,21 @@ export default function WorkDetailScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 48 },
+  banner: {
+    width: "100%",
+    height: 160,
+    borderRadius: 10,
+    marginBottom: 16,
+    backgroundColor: colors.elevated,
+  },
+  heading: { flexDirection: "row", alignItems: "center", gap: 12 },
+  headingText: { flex: 1, minWidth: 0 },
+  icon: {
+    width: 52,
+    height: 52,
+    borderRadius: 12,
+    backgroundColor: colors.elevated,
+  },
   status: {
     color: colors.accent,
     fontSize: 11,
@@ -87,13 +123,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   title: {
-    marginTop: 8,
+    marginTop: 4,
     color: colors.ink,
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "700",
     letterSpacing: -0.5,
   },
-  blurb: { marginTop: 10, color: colors.muted, fontSize: 15, lineHeight: 22 },
+  blurb: { marginTop: 12, color: colors.muted, fontSize: 15, lineHeight: 22 },
   h2: {
     marginTop: 24,
     marginBottom: 8,
