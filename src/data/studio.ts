@@ -1,4 +1,4 @@
-/** Digitize Turf → studio framing — aligned with web `src/data/studio.ts`. */
+/** Studio framing — aligned with web `src/data/studio.ts`. */
 
 export const pastServices = [
   {
@@ -18,11 +18,11 @@ export const pastServices = [
 export const studioFraming = {
   headline: "Digitize Turf → this studio",
   body:
-    "Previously founded and ran Digitize Turf (Clutch) — remote mobile and web product work for clients and startups worldwide. The craft carries forward; the brand today is Arsalan Arshad at arsalandev.studio. Inquire, chat daily, ship directly.",
+    "Earlier I built Digitize Turf for myself — a personal brand for remote mobile and web product work (Clutch reviews still live on that profile). The craft carries forward; the brand today is Arsalan Arshad at arsalandev.studio. Inquire, chat daily, ship directly.",
   bullets: [
     "Remote-first delivery across time zones",
     "Mobile apps (iOS, Android, React Native) with store CI/CD",
-    "Startup and marketplace product work — not agency theater",
-    "Past Digitize Turf credibility; current brand is this studio",
+    "Startup and marketplace product work — sole builder, not an agency",
+    "Earlier Digitize Turf personal brand; current brand is this studio",
   ],
 } as const;

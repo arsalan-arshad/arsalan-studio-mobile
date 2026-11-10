@@ -1,7 +1,8 @@
 import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, Platform, Pressable, StyleSheet, Text } from "react-native";
 import {
   getGoogleClientIds,
   isGoogleSignInConfigured,
@@ -11,10 +12,61 @@ import { colors } from "../theme";
 
 WebBrowser.maybeCompleteAuthSession();
 
+/** Matches app.json `scheme` — add this URI on the Google Web OAuth client. */
+const GOOGLE_REDIRECT_URI = makeRedirectUri({
+  scheme: "arsalanstudio",
+  path: "oauthredirect",
+});
+
 type Props = {
   onError?: (message: string) => void;
   disabled?: boolean;
 };
+
+function formatGoogleAuthError(response: {
+  type: string;
+  errorCode?: string | null;
+  params?: Record<string, string>;
+  error?: { message?: string; code?: string } | null;
+}): string {
+  const params = response.params ?? {};
+  const code = (
+    params.error ||
+    response.errorCode ||
+    response.error?.code ||
+    ""
+  ).toLowerCase();
+  const description = (
+    params.error_description ||
+    params.error_message ||
+    response.error?.message ||
+    ""
+  ).replace(/\+/g, " ");
+
+  if (
+    code === "access_denied" ||
+    /access.?blocked|access_denied|app.?is.?blocked/i.test(description)
+  ) {
+    return (
+      "Google AccessBlocked: OAuth consent is likely in Testing without your Google account as a Test user, " +
+      "or the redirect URI / client type is wrong for this build. " +
+      "In Google Cloud Console → OAuth consent screen: add your email under Test users (or publish the app). " +
+      `Authorized redirect URIs on the Web client must include ${GOOGLE_REDIRECT_URI}. ` +
+      "Prefer a Dev Client / store build over Expo Go for native Google sign-in."
+    );
+  }
+
+  if (code === "redirect_uri_mismatch" || /redirect.?uri/i.test(description)) {
+    return (
+      `Google redirect URI mismatch. Add ${GOOGLE_REDIRECT_URI} to the Web OAuth client's Authorized redirect URIs ` +
+      "(and iOS/Android clients if you set those IDs)."
+    );
+  }
+
+  if (description) return description;
+  if (code) return `Google sign-in failed (${code}).`;
+  return "Google sign-in was cancelled or failed.";
+}
 
 export function GoogleSignInButton({ onError, disabled }: Props) {
   const { loginWithGoogle } = useAuth();
@@ -28,12 +80,23 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
     iosClientId: ids.iosClientId || undefined,
     androidClientId: ids.androidClientId || undefined,
     webClientId: ids.webClientId || undefined,
+    redirectUri: GOOGLE_REDIRECT_URI,
   });
 
   useEffect(() => {
     let cancelled = false;
     async function finish() {
-      if (response?.type !== "success") return;
+      if (!response) return;
+
+      if (response.type === "error" || response.type === "dismiss") {
+        if (response.type === "error" && !cancelled) {
+          onError?.(formatGoogleAuthError(response));
+        }
+        return;
+      }
+
+      if (response.type !== "success") return;
+
       const idToken =
         response.params.id_token ||
         (response.authentication as { idToken?: string } | null)?.idToken;
@@ -83,6 +146,12 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
         setBusy(true);
         onError?.("");
         try {
+          // Log redirect once in __DEV__ so Console URIs can be matched exactly.
+          if (__DEV__) {
+            console.info(
+              `[Google auth] redirectUri=${GOOGLE_REDIRECT_URI} platform=${Platform.OS}`,
+            );
+          }
           await promptAsync();
         } catch (e) {
           onError?.(e instanceof Error ? e.message : "Google sign-in failed");
