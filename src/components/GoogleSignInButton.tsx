@@ -1,6 +1,13 @@
-import Constants from "expo-constants";
+import Constants, { ExecutionEnvironment } from "expo-constants";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Platform, Pressable, StyleSheet, Text } from "react-native";
+import {
+  ActivityIndicator,
+  NativeModules,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+} from "react-native";
 import {
   getGoogleClientIds,
   isGoogleSignInConfigured,
@@ -36,20 +43,35 @@ type GoogleNative = {
 let configuredNative = false;
 let nativeModule: GoogleNative | null | undefined;
 
+function isExpoGo() {
+  return Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+}
+
+/** True only when the native binary actually registered RNGoogleSignin. */
+function hasGoogleSignInNativeBinary() {
+  if (isExpoGo()) return false;
+  return Boolean(
+    NativeModules.RNGoogleSignin ||
+      // Some builds expose the module under a slightly different key.
+      (NativeModules as Record<string, unknown>).RNGoogleSigninModule,
+  );
+}
+
 function loadGoogleNative(): GoogleNative | null {
   if (nativeModule !== undefined) return nativeModule;
+  // Never require the package in Expo Go — module init calls TurboModuleRegistry
+  // and crashes the screen even inside try/catch (redbox).
+  if (!hasGoogleSignInNativeBinary()) {
+    nativeModule = null;
+    return null;
+  }
   try {
-    // Lazy require so Expo Go doesn't crash on import when RNGoogleSignin is missing.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     nativeModule = require("@react-native-google-signin/google-signin") as GoogleNative;
   } catch {
     nativeModule = null;
   }
   return nativeModule;
-}
-
-function isExpoGo() {
-  return Constants.appOwnership === "expo";
 }
 
 function ensureGoogleConfigured(mod: GoogleNative) {
@@ -96,8 +118,8 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
   const { loginWithGoogle } = useAuth();
   const configured = isGoogleSignInConfigured();
   const [busy, setBusy] = useState(false);
-  const native = loadGoogleNative();
-  const needsDevClient = !native || isExpoGo();
+  const canUseNative = hasGoogleSignInNativeBinary();
+  const native = canUseNative ? loadGoogleNative() : null;
 
   useEffect(() => {
     if (configured && native) {
@@ -111,13 +133,13 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
     }
   }, [configured, native]);
 
-  if (needsDevClient) {
+  if (!canUseNative || !native) {
     return (
       <Pressable
         style={styles.disabled}
         onPress={() =>
           onError?.(
-            "Native Google Sign-In needs a Dev Client (not Expo Go). Run: eas build -p android --profile development — then install that APK and open it.",
+            "Native Google Sign-In needs a Dev Client (not Expo Go). Run: eas build -p android --profile development — install that APK, then npx expo start --dev-client.",
           )
         }
       >
