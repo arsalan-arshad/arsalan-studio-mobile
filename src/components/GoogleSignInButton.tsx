@@ -1,9 +1,4 @@
-import {
-  GoogleSignin,
-  isErrorWithCode,
-  isSuccessResponse,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
+import Constants from "expo-constants";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Platform, Pressable, StyleSheet, Text } from "react-native";
 import {
@@ -18,29 +13,64 @@ type Props = {
   disabled?: boolean;
 };
 
-let configuredNative = false;
+type GoogleNative = {
+  GoogleSignin: {
+    configure: (opts: {
+      webClientId?: string;
+      iosClientId?: string;
+      offlineAccess?: boolean;
+    }) => void;
+    hasPlayServices: (opts?: { showPlayServicesUpdateDialog?: boolean }) => Promise<boolean>;
+    signIn: () => Promise<{ type: string; data?: { idToken?: string | null } }>;
+    getTokens: () => Promise<{ idToken?: string | null }>;
+  };
+  isErrorWithCode: (e: unknown) => e is { code: string };
+  isSuccessResponse: (r: { type: string }) => boolean;
+  statusCodes: {
+    SIGN_IN_CANCELLED: string;
+    IN_PROGRESS: string;
+    PLAY_SERVICES_NOT_AVAILABLE: string;
+  };
+};
 
-function ensureGoogleConfigured() {
+let configuredNative = false;
+let nativeModule: GoogleNative | null | undefined;
+
+function loadGoogleNative(): GoogleNative | null {
+  if (nativeModule !== undefined) return nativeModule;
+  try {
+    // Lazy require so Expo Go doesn't crash on import when RNGoogleSignin is missing.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    nativeModule = require("@react-native-google-signin/google-signin") as GoogleNative;
+  } catch {
+    nativeModule = null;
+  }
+  return nativeModule;
+}
+
+function isExpoGo() {
+  return Constants.appOwnership === "expo";
+}
+
+function ensureGoogleConfigured(mod: GoogleNative) {
   if (configuredNative) return;
   const { webClientId, iosClientId } = getGoogleClientIds();
-  GoogleSignin.configure({
-    // Web client ID → id_token.aud the API accepts via AUTH_GOOGLE_ID.
+  mod.GoogleSignin.configure({
     webClientId: webClientId || undefined,
-    // iOS OAuth client (bundle studio.arsalan.app). Required without Firebase plist.
     iosClientId: iosClientId || undefined,
     offlineAccess: false,
   });
   configuredNative = true;
 }
 
-function formatNativeGoogleError(e: unknown): string {
-  if (isErrorWithCode(e)) {
+function formatNativeGoogleError(mod: GoogleNative, e: unknown): string {
+  if (mod.isErrorWithCode(e)) {
     switch (e.code) {
-      case statusCodes.SIGN_IN_CANCELLED:
+      case mod.statusCodes.SIGN_IN_CANCELLED:
         return "";
-      case statusCodes.IN_PROGRESS:
+      case mod.statusCodes.IN_PROGRESS:
         return "Google sign-in is already in progress.";
-      case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+      case mod.statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
         return "Google Play Services is missing or out of date on this device.";
       default:
         break;
@@ -66,18 +96,37 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
   const { loginWithGoogle } = useAuth();
   const configured = isGoogleSignInConfigured();
   const [busy, setBusy] = useState(false);
+  const native = loadGoogleNative();
+  const needsDevClient = !native || isExpoGo();
 
   useEffect(() => {
-    if (configured) {
+    if (configured && native) {
       try {
-        ensureGoogleConfigured();
+        ensureGoogleConfigured(native);
       } catch (e) {
         if (__DEV__) {
           console.warn("[Google auth] configure failed", e);
         }
       }
     }
-  }, [configured]);
+  }, [configured, native]);
+
+  if (needsDevClient) {
+    return (
+      <Pressable
+        style={styles.disabled}
+        onPress={() =>
+          onError?.(
+            "Native Google Sign-In needs a Dev Client (not Expo Go). Run: eas build -p android --profile development — then install that APK and open it.",
+          )
+        }
+      >
+        <Text style={styles.disabledText}>
+          Continue with Google (needs Dev Client build)
+        </Text>
+      </Pressable>
+    );
+  }
 
   if (!configured) {
     return (
@@ -104,26 +153,24 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
         setBusy(true);
         onError?.("");
         try {
-          ensureGoogleConfigured();
+          ensureGoogleConfigured(native);
           if (Platform.OS === "android") {
-            await GoogleSignin.hasPlayServices({
+            await native.GoogleSignin.hasPlayServices({
               showPlayServicesUpdateDialog: true,
             });
           }
           if (__DEV__) {
             console.info(
-              `[Google auth] native sign-in platform=${Platform.OS} (no /oauth/mobile-google bridge)`,
+              `[Google auth] native sign-in platform=${Platform.OS} (no browser bridge)`,
             );
           }
-          const response = await GoogleSignin.signIn();
-          if (!isSuccessResponse(response)) {
-            // cancelled
+          const response = await native.GoogleSignin.signIn();
+          if (!native.isSuccessResponse(response)) {
             return;
           }
-          const idToken = response.data.idToken;
+          const idToken = response.data?.idToken;
           if (!idToken) {
-            // Some Android builds need an extra token fetch after sign-in.
-            const tokens = await GoogleSignin.getTokens();
+            const tokens = await native.GoogleSignin.getTokens();
             if (!tokens.idToken) {
               onError?.(
                 "Google did not return an ID token. Confirm EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is the Web client ID (used as server client id).",
@@ -135,7 +182,7 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
           }
           await loginWithGoogle(idToken);
         } catch (e) {
-          const msg = formatNativeGoogleError(e);
+          const msg = formatNativeGoogleError(native, e);
           if (msg) onError?.(msg);
         } finally {
           setBusy(false);

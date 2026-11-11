@@ -15,6 +15,7 @@ const iosUrlScheme = iosClientPrefix
 const expoConfig = {
   name: "Arsalan Arshad",
   slug: "arsalan-studio",
+  owner: "arsalandev",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
@@ -63,6 +64,7 @@ const expoConfig = {
   plugins: [
     "expo-router",
     "expo-web-browser",
+    "expo-dev-client",
     [
       "@react-native-google-signin/google-signin",
       {
@@ -75,7 +77,7 @@ const expoConfig = {
   },
   extra: {
     eas: {
-      projectId: "replace-after-eas-init",
+      projectId: "bf21c605-0979-43a5-a181-c2a82bd53be4",
     },
     apiUrl: "https://arsalandev.studio",
     domain: "arsalandev.studio",
