@@ -72,11 +72,73 @@ export default function WorkDetailScreen() {
         <Text style={styles.h2}>Who it’s for</Text>
         <Text style={styles.body}>{detail?.audience ?? "—"}</Text>
 
+        {detail?.usage?.length ? (
+          <>
+            <Text style={styles.h2}>Usage</Text>
+            {detail.usage.map((step, i) => (
+              <Text key={step} style={styles.bullet}>
+                {i + 1}. {step}
+              </Text>
+            ))}
+          </>
+        ) : null}
+
         <Text style={styles.h2}>Key features</Text>
         {(detail?.features ?? []).map((f) => (
           <Text key={f} style={styles.bullet}>
             · {f}
           </Text>
+        ))}
+
+        {(detail?.results ?? []).map((block) => (
+          <View key={block.title}>
+            <Text style={styles.h2}>{block.title}</Text>
+            {block.intro ? <Text style={styles.body}>{block.intro}</Text> : null}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator
+              style={styles.tableScroll}
+              contentContainerStyle={styles.tableScrollContent}
+            >
+              <View>
+                <View style={styles.tableRow}>
+                  {block.columns.map((col) => (
+                    <Text key={col} style={[styles.tableCell, styles.tableHead]}>
+                      {col}
+                    </Text>
+                  ))}
+                </View>
+                {block.rows.map((row) => (
+                  <View key={row.join("|")} style={styles.tableRow}>
+                    {row.map((cell, i) => (
+                      <Text
+                        key={`${row[0]}-${block.columns[i]}`}
+                        style={styles.tableCell}
+                      >
+                        {cell}
+                      </Text>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+            {block.bullets?.map((b) => (
+              <Text key={b} style={styles.bullet}>
+                · {b}
+              </Text>
+            ))}
+            {block.footnote ? (
+              <Text style={[styles.body, { marginTop: 8 }]}>{block.footnote}</Text>
+            ) : null}
+            {block.link ? (
+              <Pressable
+                onPress={() => Linking.openURL(block.link!.href)}
+                style={{ marginTop: 8 }}
+              >
+                <Text style={styles.link}>{block.link.label} →</Text>
+              </Pressable>
+            ) : null}
+          </View>
         ))}
 
         <Text style={styles.h2}>Open source</Text>
@@ -166,6 +228,22 @@ const styles = StyleSheet.create({
   label: { color: colors.ink, fontWeight: "600", fontSize: 13 },
   body: { marginTop: 4, color: colors.muted, fontSize: 14, lineHeight: 21 },
   bullet: { color: colors.ink, fontSize: 14, lineHeight: 22, marginTop: 4 },
+  tableScroll: { marginTop: 10, marginBottom: 4 },
+  tableScrollContent: { paddingRight: 16 },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
+  },
+  tableCell: {
+    width: 140,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    color: colors.muted,
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  tableHead: { color: colors.ink, fontWeight: "700" },
   actions: { flexDirection: "row", flexWrap: "wrap", gap: 16, marginTop: 28 },
   link: { color: colors.accent, fontWeight: "700", fontSize: 14 },
 });

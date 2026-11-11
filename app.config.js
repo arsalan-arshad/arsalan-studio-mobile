@@ -71,6 +71,7 @@ const expoConfig = {
         iosUrlScheme,
       },
     ],
+    "./plugins/withGoogleSignInGitPod.js",
   ],
   experiments: {
     typedRoutes: true,

@@ -17,6 +17,15 @@ const WEB = process.env.EXPO_PUBLIC_API_URL ?? "https://arsalandev.studio";
 
 export const caseStudies: CaseStudy[] = [
   {
+    id: "pathwise",
+    title: "Pathwise",
+    category: "Other",
+    status: "Released",
+    blurb:
+      "Query planner for RAG and agent pipelines — declare your quality SLA; Pathwise picks the cheapest plan per request.",
+    githubUrl: "https://github.com/arsalan-arshad/pathwise",
+  },
+  {
     id: "ai-forecast",
     title: "AI Forecast Agent",
     category: "Shopify",

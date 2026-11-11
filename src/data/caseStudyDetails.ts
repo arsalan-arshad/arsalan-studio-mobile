@@ -1,16 +1,88 @@
 /** Condensed case study bodies for mobile detail — mirrors web honesty. */
+export type MobileResultBlock = {
+  title: string;
+  intro?: string;
+  columns: string[];
+  rows: string[][];
+  bullets?: string[];
+  link?: { label: string; href: string };
+  footnote?: string;
+};
+
 export type MobileDetail = {
   id: string;
   summary: string;
   problem: string;
   solution: string;
   audience: string;
+  usage?: string[];
   features: string[];
+  results?: MobileResultBlock[];
   openSource: string;
   buildingNote?: string;
 };
 
 export const details: Record<string, MobileDetail> = {
+  pathwise: {
+    id: "pathwise",
+    summary:
+      "Open-source TypeScript query planner for RAG and agent pipelines: declare the quality you need; Pathwise picks the cheapest plan per request.",
+    problem:
+      "AI pipelines hard-code one model/topK/reranker for every request and pay frontier prices for trivial questions.",
+    solution:
+      "Mark your knobs, calibrate, plan per request. Adaptive calibration used about 9% of exhaustive calibration cost on the synthetic workload; on the real run it used about 37% of the runs (447 of 1,200).",
+    audience: "TS engineers wiring RAG or agent stacks who need cost control under a quality SLA.",
+    usage: [
+      "Clone the repo: git clone https://github.com/arsalan-arshad/pathwise && cd pathwise && npm install",
+      "createPlanner({ space, pipeline, scorer, sla })",
+      "await planner.calibrate(sampleQueries)",
+      "await planner.run(userQuery)",
+    ],
+    features: [
+      "Per-request cheapest plan under a quality SLA",
+      "Confidence-calibrated SLA mode (synthetic: 0/320 misses vs 45 for average-based)",
+      "Demo workload: same 100% accuracy at ~$4.93 vs $33 always-max (synthetic; real savings vary)",
+    ],
+    results: [
+      {
+        title: "Demo results (synthetic)",
+        intro: "Simulated support-bot workload, 1,000 queries, 90% accuracy SLA:",
+        columns: ["Strategy", "Accuracy", "Cost"],
+        rows: [
+          ["Always max (large, topK 10, rerank)", "100.0%", "$33.00"],
+          ["Typical default (large, topK 5)", "100.0%", "$26.00"],
+          ["Always cheap (small, topK 2)", "52.8%", "$0.34"],
+          ["Pathwise planner", "100.0%", "$4.93"],
+        ],
+        footnote:
+          "The workload is synthetic; real savings depend on how varied your traffic is.",
+      },
+      {
+        title: "First result on real data",
+        intro:
+          "HotpotQA, real Gemini calls, 12 plans, 100 calibration and 200 test questions. Costs are paid list prices; the run used the free tier. Target: F1 of at least 0.725 (95% of the best plan's F1 on the calibration questions).",
+        columns: ["Strategy", "Mean F1", "$ per query", "Meets 0.725"],
+        rows: [
+          ["Always cheapest plan", "0.542", "$0.00025", "no"],
+          ["Typical default", "0.685", "$0.00044", "no"],
+          ["Pathwise, average-based", "0.707", "$0.00066", "no, 1.8 points short"],
+          ["Pathwise, guaranteed", "0.789", "$0.00164", "yes"],
+          ["Always best plan", "0.789", "$0.00164", "yes"],
+        ],
+        bullets: [
+          "Average-based mode was 60% cheaper than the best plan and kept 90% of its F1, but it can miss the target.",
+          "The guarantee mode refused to certify the target and fell back to the best plan, so it saved nothing. With 100 questions even the best plan cannot prove 95% of its own score.",
+          "The first run exposed a bug (calibration pruned the best plans); it is fixed and both runs are published in the repo.",
+          "Not shown: that routing beats the best single fixed plan. One dataset, one provider, one run.",
+        ],
+        link: {
+          label: "Full results and limits",
+          href: "https://github.com/arsalan-arshad/pathwise#first-result-on-real-data",
+        },
+      },
+    ],
+    openSource: "MIT — https://github.com/arsalan-arshad/pathwise",
+  },
   "ai-forecast": {
     id: "ai-forecast",
     summary:

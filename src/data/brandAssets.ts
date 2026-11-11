@@ -5,6 +5,10 @@ export const brandAssets: Record<
   string,
   { icon: ImageSourcePropType; banner: ImageSourcePropType }
 > = {
+  pathwise: {
+    icon: require("../../assets/brands/ai/pathwise/icon.png"),
+    banner: require("../../assets/brands/ai/pathwise/banner.png"),
+  },
   "ai-forecast": {
     icon: require("../../assets/brands/shopify/ai-forecast-agent/icon.png"),
     banner: require("../../assets/brands/shopify/ai-forecast-agent/banner.png"),
@@ -75,6 +79,10 @@ const WEB = "https://arsalandev.studio";
 
 /** Remote fallbacks if a local asset is missing at runtime. */
 export const remoteBrandPaths: Record<string, { icon: string; banner: string }> = {
+  pathwise: {
+    icon: `${WEB}/brands/ai/pathwise/icon.png`,
+    banner: `${WEB}/brands/ai/pathwise/banner.png`,
+  },
   "ai-forecast": {
     icon: `${WEB}/brands/shopify/ai-forecast-agent/icon.png`,
     banner: `${WEB}/brands/shopify/ai-forecast-agent/banner.png`,
