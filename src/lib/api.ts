@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 
 const TOKEN_KEY = "arsalan.auth.token";
 const REFRESH_KEY = "arsalan.auth.refresh";
@@ -188,8 +189,12 @@ export function getGoogleClientIds() {
 
 export function isGoogleSignInConfigured() {
   const { webClientId, iosClientId, androidClientId } = getGoogleClientIds();
-  // Web client ID is required for id_token audience; platform IDs optional for Expo Go.
-  return Boolean(webClientId || iosClientId || androidClientId);
+  // Native Google Sign-In: Web client ID is required for id_token (server client id /
+  // audience). Platform OAuth clients must exist for the current OS.
+  if (!webClientId) return false;
+  if (Platform.OS === "ios") return Boolean(iosClientId);
+  if (Platform.OS === "android") return Boolean(androidClientId);
+  return true;
 }
 
 export async function logout() {

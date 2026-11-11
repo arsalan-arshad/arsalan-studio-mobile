@@ -8,11 +8,23 @@ export type CaseStudy = {
   liveUrl?: string;
   liveLabel?: string;
   demoUrl?: string;
+  demoLabel?: string;
+  youtubeUrl?: string;
+  youtubeLabel?: string;
 };
 
 const WEB = process.env.EXPO_PUBLIC_API_URL ?? "https://arsalandev.studio";
 
 export const caseStudies: CaseStudy[] = [
+  {
+    id: "pathwise",
+    title: "Pathwise",
+    category: "Other",
+    status: "Released",
+    blurb:
+      "Query planner for RAG and agent pipelines — declare your quality SLA; Pathwise picks the cheapest plan per request.",
+    githubUrl: "https://github.com/arsalan-arshad/pathwise",
+  },
   {
     id: "ai-forecast",
     title: "AI Forecast Agent",
@@ -24,12 +36,24 @@ export const caseStudies: CaseStudy[] = [
     liveLabel: "Live",
   },
   {
+    id: "protocols",
+    title: "Practitioner Protocols",
+    category: "Shopify",
+    status: "Coming soon",
+    blurb: "Protocols by link/QR with one-tap add-to-cart.",
+    githubUrl: "https://github.com/arsalan-arshad/practitioner-protocols",
+    demoUrl: "https://practitioner-protocols-production.up.railway.app/demo",
+    demoLabel: "Demo",
+    youtubeUrl: "https://www.youtube.com/watch?v=m0nlmLj-RKE",
+  },
+  {
     id: "pipeline",
     title: "Pipeline-Aware Forecast",
     category: "Shopify",
     status: "Coming soon",
     blurb: "Salesforce pipeline as forward demand in Shopify forecasts.",
     githubUrl: "https://github.com/arsalan-arshad/pipeline-aware-forecast",
+    youtubeUrl: "https://www.youtube.com/watch?v=DpOLWprYx7g",
   },
   {
     id: "bridge",
@@ -37,13 +61,8 @@ export const caseStudies: CaseStudy[] = [
     category: "Shopify",
     status: "Coming soon",
     blurb: "Narrow Shopify → Salesforce recipes on a small shared core.",
-  },
-  {
-    id: "protocols",
-    title: "Practitioner Protocols",
-    category: "Shopify",
-    status: "Coming soon",
-    blurb: "Protocols by link/QR with one-tap add-to-cart.",
+    githubUrl: "https://github.com/arsalan-arshad/bridge-recipes",
+    youtubeUrl: "https://www.youtube.com/watch?v=vGMt_7cxuKg",
   },
   {
     id: "mcp",
@@ -136,10 +155,39 @@ export const caseStudies: CaseStudy[] = [
     liveLabel: "Live",
   },
   {
+    id: "proposal-guard",
+    title: "Proposal Guard",
+    category: "Other",
+    status: "Live",
+    blurb:
+      "Deterministic, offline scope-creep checker for proposals and SOWs. Not legal advice.",
+    liveUrl: "https://proposal-guard-production.up.railway.app/",
+    liveLabel: "Live",
+    githubUrl: "https://github.com/arsalan-arshad/proposal-guard",
+  },
+  {
     id: "sme",
     title: "SME Automation Services",
     category: "Other",
     status: "Coming soon / launching",
     blurb: "Fixed-scope WhatsApp / ERP / commerce automation.",
+  },
+  {
+    id: "eu-ai-act",
+    title: "EU AI Act Checker",
+    category: "Other",
+    status: "Coming soon",
+    blurb:
+      "Open scanner for public-site AI Act transparency basics + paid audit report. Technical check, not legal advice.",
+    githubUrl: "https://github.com/arsalan-arshad/ai-act-check",
+  },
+  {
+    id: "freight",
+    title: "Freight Exceptions",
+    category: "Other",
+    status: "Coming soon",
+    blurb:
+      "Deterministic exception rules for small brokers/3PLs — AI extracts and drafts; humans approve.",
+    githubUrl: "https://github.com/arsalan-arshad/freight-exceptions",
   },
 ];
