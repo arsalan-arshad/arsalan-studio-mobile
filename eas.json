@@ -24,6 +24,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com",
@@ -33,6 +34,17 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleTeamId": "RFDNFB5LLH",
+        "language": "en-US",
+        "sku": "studio.arsalan.app",
+        "companyName": "Arsalan Arshad"
+      },
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
   }
 }
