@@ -143,9 +143,9 @@ export default function HomeScreen() {
         Short name: Arsalan · Package: studio.arsalan.app · arsalandev.studio
       </Text>
       <Text style={styles.studioNote}>
-        Earlier personal brand Digitize Turf (Clutch reviews still there). Brand
-        is now this studio — craft from that chapter, marketplace under Arsalan
-        Arshad.
+        Verified reviews on Clutch under Arsalan Arshad. Digitize Turf was an
+        earlier personal brand name — craft from that chapter, marketplace under
+        this studio.
       </Text>
     </ScrollView>
   );

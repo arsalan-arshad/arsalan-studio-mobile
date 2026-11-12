@@ -16,13 +16,13 @@ export const pastServices = [
 ] as const;
 
 export const studioFraming = {
-  headline: "Digitize Turf → this studio",
+  headline: "One builder — this studio",
   body:
-    "Earlier I built Digitize Turf for myself — a personal brand for remote mobile and web product work (Clutch reviews still live on that profile). The craft carries forward; the brand today is Arsalan Arshad at arsalandev.studio. Inquire, chat daily, ship directly.",
+    "Earlier I built Digitize Turf for myself — a personal brand for remote mobile and web product work. The craft carries forward; the brand today is Arsalan Arshad at arsalandev.studio, with verified reviews on Clutch. Inquire, chat daily, ship directly.",
   bullets: [
     "Remote-first delivery across time zones",
     "Mobile apps (iOS, Android, React Native) with store CI/CD",
     "Startup and marketplace product work — sole builder, not an agency",
-    "Earlier Digitize Turf personal brand; current brand is this studio",
+    "Clutch reviews under Arsalan Arshad; Digitize Turf was earlier brand name",
   ],
 } as const;

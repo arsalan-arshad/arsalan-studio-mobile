@@ -15,8 +15,8 @@ export const presenceLinks: PresenceLink[] = [
   {
     id: "clutch",
     label: "Clutch",
-    href: "https://clutch.co/profile/digitize-turf",
-    note: "Earlier personal brand · reviews on Digitize Turf Clutch profile",
+    href: "https://clutch.co/profile/arsalan-arshad",
+    note: "Verified client reviews · Arsalan Arshad",
   },
   {
     id: "nana",

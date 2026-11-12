@@ -143,13 +143,13 @@ export default function ProfileScreen() {
         <Text style={styles.boxTitle}>Studio note</Text>
         <Text style={styles.boxBody}>
           Digitize Turf was an earlier personal brand I built for myself — not an
-          agency. Clutch reviews remain on that profile. Brand is now Arsalan
-          Arshad studio at arsalandev.studio.
+          agency. Brand and Clutch reviews are now under Arsalan Arshad studio at
+          arsalandev.studio.
         </Text>
         <Pressable
-          onPress={() => Linking.openURL("https://clutch.co/profile/digitize-turf")}
+          onPress={() => Linking.openURL("https://clutch.co/profile/arsalan-arshad")}
         >
-          <Text style={styles.link}>Clutch · Digitize Turf reviews</Text>
+          <Text style={styles.link}>Clutch reviews · Arsalan Arshad</Text>
         </Pressable>
       </View>
 

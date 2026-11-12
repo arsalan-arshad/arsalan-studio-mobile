@@ -104,9 +104,9 @@ export default function WorkScreen() {
           </View>
         ))}
         <Pressable
-          onPress={() => Linking.openURL("https://clutch.co/profile/digitize-turf")}
+          onPress={() => Linking.openURL("https://clutch.co/profile/arsalan-arshad")}
         >
-          <Text style={styles.link}>Clutch · Digitize Turf reviews →</Text>
+          <Text style={styles.link}>Clutch reviews →</Text>
         </Pressable>
       </View>
 
