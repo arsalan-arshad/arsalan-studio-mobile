@@ -161,6 +161,11 @@ export default function WorkDetailScreen() {
               <Text style={styles.link}>{item.liveLabel ?? "Live"}</Text>
             </Pressable>
           ) : null}
+          {item.npmUrl ? (
+            <Pressable onPress={() => Linking.openURL(item.npmUrl!)}>
+              <Text style={styles.link}>npm</Text>
+            </Pressable>
+          ) : null}
           {item.demoUrl ? (
             <Pressable onPress={() => Linking.openURL(item.demoUrl!)}>
               <Text style={styles.link}>{item.demoLabel ?? "Demo"}</Text>

@@ -7,6 +7,7 @@ export type CaseStudy = {
   githubUrl?: string;
   liveUrl?: string;
   liveLabel?: string;
+  npmUrl?: string;
   demoUrl?: string;
   demoLabel?: string;
   youtubeUrl?: string;
@@ -42,7 +43,7 @@ export const caseStudies: CaseStudy[] = [
     status: "Coming soon",
     blurb: "Protocols by link/QR with one-tap add-to-cart.",
     githubUrl: "https://github.com/arsalan-arshad/practitioner-protocols",
-    demoUrl: "https://practitioner-protocols-production.up.railway.app/demo",
+    demoUrl: "https://practationer.arsalandev.studio/demo",
     demoLabel: "Demo",
     youtubeUrl: "https://www.youtube.com/watch?v=m0nlmLj-RKE",
   },
@@ -72,7 +73,7 @@ export const caseStudies: CaseStudy[] = [
     blurb:
       "v0.2.3 — deterministic inventory MCP for AI assistants. Local or hosted BYOK.",
     githubUrl: "https://github.com/arsalan-arshad/shopify-inventory-mcp",
-    liveUrl: "https://shopify-inventory-mcp-production-e5fd.up.railway.app/",
+    liveUrl: "https://shopify-mcp.arsalandev.studio/",
     liveLabel: "Live",
   },
   {
@@ -151,7 +152,7 @@ export const caseStudies: CaseStudy[] = [
     category: "Other",
     status: "Live",
     blurb: "Stockroom Studio hub for AI influencer characters.",
-    liveUrl: "https://influencer-hub-production-23f6.up.railway.app/",
+    liveUrl: "https://influencer.arsalandev.studio/",
     liveLabel: "Live",
   },
   {
@@ -161,8 +162,9 @@ export const caseStudies: CaseStudy[] = [
     status: "Live",
     blurb:
       "Deterministic, offline scope-creep checker for proposals and SOWs. Not legal advice.",
-    liveUrl: "https://proposal-guard-production.up.railway.app/",
+    liveUrl: "https://proposal-guard.arsalandev.studio/",
     liveLabel: "Live",
+    npmUrl: "https://www.npmjs.com/package/proposal-guard",
     githubUrl: "https://github.com/arsalan-arshad/proposal-guard",
   },
   {
