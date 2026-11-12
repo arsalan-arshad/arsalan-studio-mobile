@@ -88,6 +88,14 @@ eas submit --platform ios   # after Apple credentials configured
 
 `eas.json` already has development / preview / production profiles. Preview and production use `https://arsalandev.studio`.
 
+Submit profile (`submit.production`) sets Android `internal`/`draft` and iOS team/SKU. After you create the app in App Store Connect, add the numeric **Apple ID** under App Information as `submit.production.ios.ascAppId` (required for non-interactive submit):
+
+```json
+"ios": { "ascAppId": "1234567890", "appleTeamId": "RFDNFB5LLH", ... }
+```
+
+Play service-account JSON and ASC API keys stay in Expo credentials / local secrets — never commit them.
+
 ### Fastlane
 
 ```bash
