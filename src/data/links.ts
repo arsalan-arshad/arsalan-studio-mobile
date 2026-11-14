@@ -1,3 +1,5 @@
+import { brand } from "../lib/brand";
+
 export type PresenceLink = {
   id: string;
   label: string;
@@ -15,8 +17,8 @@ export const presenceLinks: PresenceLink[] = [
   {
     id: "clutch",
     label: "Clutch",
-    href: "https://clutch.co/profile/arsalan-arshad",
-    note: "Verified client reviews · Arsalan Arshad",
+    href: brand.clutch,
+    note: `Verified reviews · ${brand.name} (same app icon)`,
   },
   {
     id: "nana",

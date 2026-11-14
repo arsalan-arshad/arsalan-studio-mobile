@@ -12,6 +12,7 @@ import { getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { experience } from "../../src/data/experience";
 import { pastServices, studioFraming } from "../../src/data/studio";
+import { brand } from "../../src/lib/brand";
 import { colors } from "../../src/theme";
 
 export default function WorkScreen() {
@@ -63,7 +64,21 @@ export default function WorkScreen() {
               <Text style={styles.link}>{item.youtubeLabel ?? "YouTube"}</Text>
             </Pressable>
           ) : null}
+          {item.npmUrl ? (
+            <Pressable onPress={() => Linking.openURL(item.npmUrl!)}>
+              <Text style={styles.link}>npm</Text>
+            </Pressable>
+          ) : null}
         </View>
+        {item.installGuide ? (
+          <View style={styles.installGuide}>
+            <Text style={styles.installTitle}>{item.installGuide.title}</Text>
+            <Text style={styles.installBody}>{item.installGuide.body}</Text>
+            <Text selectable style={styles.installUrl}>
+              {item.installGuide.urlExample}
+            </Text>
+          </View>
+        ) : null}
       </View>
     );
   }
@@ -103,10 +118,13 @@ export default function WorkScreen() {
             <Text style={styles.blurb}>{service.body}</Text>
           </View>
         ))}
-        <Pressable
-          onPress={() => Linking.openURL("https://clutch.co/profile/arsalan-arshad")}
-        >
-          <Text style={styles.link}>Clutch reviews →</Text>
+        <Pressable style={styles.clutchRow} onPress={() => Linking.openURL(brand.clutch)}>
+          <Image
+            source={brand.clutchIcon}
+            style={styles.clutchIcon}
+            accessibilityLabel={`${brand.name} on Clutch`}
+          />
+          <Text style={styles.linkInline}>Clutch · {brand.name} →</Text>
         </Pressable>
       </View>
 
@@ -176,4 +194,23 @@ const styles = StyleSheet.create({
   know: { marginTop: 10, color: colors.accent, fontWeight: "700", fontSize: 14 },
   links: { flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 8 },
   link: { marginTop: 12, color: colors.accent, fontSize: 13, fontWeight: "700" },
+  clutchRow: {
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  clutchIcon: { width: 32, height: 32, borderRadius: 8 },
+  linkInline: { color: colors.accent, fontSize: 13, fontWeight: "700" },
+  installGuide: {
+    marginTop: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
+    backgroundColor: colors.elevated,
+  },
+  installTitle: { color: colors.ink, fontWeight: "700", fontSize: 12 },
+  installBody: { marginTop: 4, color: colors.muted, fontSize: 12, lineHeight: 17 },
+  installUrl: { marginTop: 8, color: colors.accent, fontSize: 11, lineHeight: 16 },
 });

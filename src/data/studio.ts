@@ -3,11 +3,11 @@
 export const pastServices = [
   {
     title: "Mobile apps",
-    body: "iOS, Android, React Native, and Flutter — from App Store pipelines to production support.",
+    body: "React Native, iOS, Android, and Flutter — Fastlane / store pipelines, AR and social products, startup and education apps.",
   },
   {
-    title: "Web products",
-    body: "React / Next.js product surfaces with clean APIs and cloud backends.",
+    title: "Web & studio products",
+    body: "React / Next.js surfaces, Shopify and Salesforce packages, and cloud backends for remote clients worldwide.",
   },
   {
     title: "Integrations & cloud",
@@ -15,14 +15,32 @@ export const pastServices = [
   },
 ] as const;
 
+export const buildTools = [
+  {
+    id: "cursor",
+    name: "Cursor",
+    blurb: "AI-native IDE for fast, reviewed implementation.",
+  },
+  {
+    id: "claude",
+    name: "Claude",
+    blurb: "Deep reasoning, specs, and careful code review in the loop.",
+  },
+  {
+    id: "antigravity",
+    name: "Antigravity",
+    blurb: "Orchestration layer across agents, tasks, and delivery cadence.",
+  },
+] as const;
+
 export const studioFraming = {
   headline: "One builder — this studio",
   body:
-    "Earlier I built Digitize Turf for myself — a personal brand for remote mobile and web product work. The craft carries forward; the brand today is Arsalan Arshad at arsalandev.studio, with verified reviews on Clutch. Inquire, chat daily, ship directly.",
+    "The craft started under an earlier personal brand name (Digitize Turf). Today the studio — and verified Clutch reviews — are fully under Arsalan Arshad at arsalandev.studio. Inquire, chat daily, ship directly.",
   bullets: [
     "Remote-first delivery across time zones",
     "Mobile apps (iOS, Android, React Native) with store CI/CD",
     "Startup and marketplace product work — sole builder, not an agency",
-    "Clutch reviews under Arsalan Arshad; Digitize Turf was earlier brand name",
+    "Clutch profile is Arsalan Arshad (same app icon) — Digitize Turf is history only",
   ],
 } as const;

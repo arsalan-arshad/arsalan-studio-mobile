@@ -8,7 +8,8 @@ export default function OffersScreen() {
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Offers</Text>
       <Text style={styles.sub}>
-        Productized packages. Start a conversation — you work with me directly.
+        Capability-led packages — open-source-friendly (often MIT). Start a
+        conversation; you work with me directly.
       </Text>
       {offers.map((offer) => (
         <View key={offer.id} style={styles.card}>
@@ -23,7 +24,10 @@ export default function OffersScreen() {
             </Text>
           ))}
           <Text style={styles.start}>{offer.startingPoint}</Text>
-          <Link href={{ pathname: "/contact", params: { need: offer.id } }} asChild>
+          <Link
+            href={{ pathname: "/contact", params: { need: offer.needParam } }}
+            asChild
+          >
             <Pressable style={styles.cta}>
               <Text style={styles.ctaText}>{offer.cta}</Text>
             </Pressable>

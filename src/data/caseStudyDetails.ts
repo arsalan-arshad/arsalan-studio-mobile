@@ -116,12 +116,26 @@ export const details: Record<string, MobileDetail> = {
   },
   protocols: {
     id: "protocols",
-    summary: "Practitioner product protocols via link/QR; one-tap cart add.",
+    summary:
+      "Professionals share product protocols by link/QR with one-tap add-to-cart and attribution. Shopify limited distribution — install via auth URL (replace [STORE-NAME]), not the public App Store.",
     problem: "Clinic recommendations get lost; brands lack attribution.",
-    solution: "Zero-PII protocols, share tokens, storefront Add all. Strong test suite; Railway live.",
+    solution:
+      "Zero-PII protocols, share tokens, storefront Add all. Strong test suite; Railway live.",
     audience: "Professional / wellness brands on Shopify.",
-    features: ["QR/link share", "Zero PII barrier", "Attribution counters"],
-    openSource: "MIT — open for PRs.",
+    usage: [
+      "Install: https://practitioner.arsalandev.studio/api/auth?shop=[STORE-NAME].myshopify.com — replace [STORE-NAME]",
+      "Merchant admin: enrol / approve practitioners",
+      "Build protocol → share link/QR → client Add all to cart",
+    ],
+    features: [
+      "QR/link share",
+      "Zero PII barrier",
+      "Attribution counters",
+      "Demo + limited-distribution install",
+    ],
+    openSource: "MIT — github.com/arsalan-arshad/practitioner-protocols",
+    buildingNote:
+      "Live on Railway. Shopify limited distribution — use the install guide URL until a public App Store listing is available.",
   },
   mcp: {
     id: "mcp",

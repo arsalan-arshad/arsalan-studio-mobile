@@ -65,7 +65,7 @@ export const experience: ExperienceItem[] = [
     title: "Freelance Software Engineer",
     org: "Fiverr, Toptal & Upwork",
     detail:
-      "5+ years remote delivery of custom mobile and web work for global clients on Fiverr; active on Upwork; Toptal profile live. AI-enhanced workflows (Claude Code, Cursor) for quality and speed.",
+      "5+ years remote delivery of custom mobile and web work for global clients on Fiverr; active on Upwork; Toptal profile live. AI-enhanced workflows (Claude Code, Cursor, Antigravity) for quality and speed.",
   },
   {
     id: "digital-leap",

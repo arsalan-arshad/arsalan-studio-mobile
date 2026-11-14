@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import { getBrandIcon } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
+import { buildTools } from "../../src/data/studio";
 import { presenceLinks } from "../../src/data/links";
+import { reviewStats, reviews } from "../../src/data/reviews";
+import { brand } from "../../src/lib/brand";
 import { colors } from "../../src/theme";
 
 const FEATURED_IDS = [
@@ -22,11 +25,25 @@ const FEATURED_IDS = [
   "proposal-guard",
 ];
 
+const HOME_PRESENCE_IDS = [
+  "instagram",
+  "github",
+  "linkedin",
+  "toptal",
+  "upwork",
+  "fiverr",
+  "clutch",
+];
+
 export default function HomeScreen() {
   const router = useRouter();
   const featured = FEATURED_IDS.map((id) => caseStudies.find((c) => c.id === id)).filter(
     Boolean,
   ) as typeof caseStudies;
+  const homePresence = HOME_PRESENCE_IDS.map((id) =>
+    presenceLinks.find((l) => l.id === id),
+  ).filter(Boolean) as typeof presenceLinks;
+  const clutchReviews = reviews.filter((r) => r.source === "clutch");
 
   return (
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
@@ -34,16 +51,16 @@ export default function HomeScreen() {
         <Image
           source={require("../../assets/brand-mark.png")}
           style={styles.mark}
-          accessibilityLabel="Arsalan Studio mark"
+          accessibilityLabel={`${brand.name} Studio mark`}
         />
         <View style={styles.heroText}>
           <Text style={styles.eyebrow}>Marketplace · Sole builder</Text>
-          <Text style={styles.brand}>Arsalan Arshad</Text>
+          <Text style={styles.brand}>{brand.name}</Text>
         </View>
       </View>
       <Text style={styles.lead}>
-        One builder. Clear offers. Daily conversation until it ships. Inquire
-        here — keep the thread alive in Messages.
+        {brand.tagline} Shopify, Salesforce, mobile, web, and automation —
+        inquire here, keep the thread alive in Messages.
       </Text>
       <View style={styles.row}>
         <Link href="/contact" asChild>
@@ -111,6 +128,15 @@ export default function HomeScreen() {
                 ) : null}
               </View>
             ) : null}
+            {item.installGuide ? (
+              <View style={styles.installGuide}>
+                <Text style={styles.installTitle}>{item.installGuide.title}</Text>
+                <Text style={styles.installBody}>{item.installGuide.body}</Text>
+                <Text selectable style={styles.installUrl}>
+                  {item.installGuide.urlExample}
+                </Text>
+              </View>
+            ) : null}
           </View>
         );
       })}
@@ -122,29 +148,72 @@ export default function HomeScreen() {
 
       <Text style={styles.section}>Also live on</Text>
       <View style={styles.chips}>
-        {presenceLinks.slice(0, 6).map((link) => (
+        {homePresence.map((link) => (
           <Pressable
             key={link.id}
             style={styles.chip}
             onPress={() => Linking.openURL(link.href)}
           >
+            {link.id === "clutch" ? (
+              <Image source={brand.clutchIcon} style={styles.chipIcon} />
+            ) : null}
             <Text style={styles.chipText}>{link.label}</Text>
           </Pressable>
         ))}
       </View>
 
+      <Text style={styles.section}>Reviews</Text>
+      <Pressable
+        style={styles.clutchRow}
+        onPress={() => Linking.openURL(reviewStats.clutchHref)}
+      >
+        <Image
+          source={brand.clutchIcon}
+          style={styles.clutchIcon}
+          accessibilityLabel={`${brand.name} on Clutch`}
+        />
+        <Text style={styles.reviewStats}>
+          Clutch {reviewStats.clutchAverage.toFixed(1)}★ · {reviewStats.clutchCount}{" "}
+          reviews · {brand.name}
+        </Text>
+      </Pressable>
+      {clutchReviews.map((r) => (
+        <Pressable
+          key={r.id}
+          style={styles.reviewCard}
+          onPress={() => Linking.openURL(r.href)}
+        >
+          <Text style={styles.reviewQuote} numberOfLines={4}>
+            “{r.quote}”
+          </Text>
+          <Text style={styles.reviewMeta}>
+            {r.author}
+            {r.company ? ` · ${r.company}` : ""} · Clutch
+          </Text>
+        </Pressable>
+      ))}
+      <Pressable onPress={() => Linking.openURL(reviewStats.fiverrHref)}>
+        <Text style={styles.featureLink}>Fiverr profile →</Text>
+      </Pressable>
+
       <Text style={styles.section}>How I build</Text>
       <Text style={styles.studioNote}>
-        AI-powered orchestrator: Cursor · Claude · Antigravity — human-owned
-        delivery with daily collaboration.
+        AI-powered orchestrator with human-owned delivery and daily
+        collaboration.
       </Text>
+      {buildTools.map((tool) => (
+        <View key={tool.id} style={styles.toolRow}>
+          <Text style={styles.toolName}>{tool.name}</Text>
+          <Text style={styles.toolBlurb}>{tool.blurb}</Text>
+        </View>
+      ))}
 
       <Text style={styles.note}>
-        Short name: Arsalan · Package: studio.arsalan.app · arsalandev.studio
+        Short name: {brand.shortName} · Package: {brand.packageId} · {brand.domain}
       </Text>
       <Text style={styles.studioNote}>
-        Verified reviews on Clutch under Arsalan Arshad. Digitize Turf was an
-        earlier personal brand name — craft from that chapter, marketplace under
+        Clutch is under {brand.name} (same app icon). {brand.pastBrand.name} was
+        an earlier brand name only — craft from that chapter, marketplace under
         this studio.
       </Text>
     </ScrollView>
@@ -242,10 +311,25 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   featureLink: { color: colors.accent, fontSize: 13, fontWeight: "700" },
+  installGuide: {
+    marginHorizontal: 14,
+    marginBottom: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
+    backgroundColor: colors.bg,
+  },
+  installTitle: { color: colors.ink, fontWeight: "700", fontSize: 12 },
+  installBody: { marginTop: 4, color: colors.muted, fontSize: 12, lineHeight: 17 },
+  installUrl: { marginTop: 8, color: colors.accent, fontSize: 11, lineHeight: 16 },
   seeAll: { marginBottom: 8, paddingVertical: 4 },
   seeAllText: { color: colors.accent, fontWeight: "700", fontSize: 14 },
   chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   chip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.elevated,
@@ -253,7 +337,34 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
   },
+  chipIcon: { width: 16, height: 16, borderRadius: 3 },
   chipText: { color: colors.ink, fontSize: 13, fontWeight: "500" },
   note: { marginTop: 24, color: colors.muted, fontSize: 12 },
   studioNote: { marginTop: 8, color: colors.muted, fontSize: 12, lineHeight: 18 },
+  clutchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 10,
+  },
+  clutchIcon: { width: 36, height: 36, borderRadius: 8 },
+  reviewStats: {
+    flex: 1,
+    color: colors.ink,
+    fontWeight: "700",
+    fontSize: 14,
+  },
+  reviewCard: {
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.elevated,
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 10,
+  },
+  reviewQuote: { color: colors.ink, fontSize: 13, lineHeight: 19 },
+  reviewMeta: { marginTop: 8, color: colors.muted, fontSize: 12 },
+  toolRow: { marginBottom: 10 },
+  toolName: { color: colors.ink, fontWeight: "700", fontSize: 14 },
+  toolBlurb: { marginTop: 2, color: colors.muted, fontSize: 13, lineHeight: 18 },
 });

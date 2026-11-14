@@ -1,3 +1,4 @@
+import { FontAwesome } from "@expo/vector-icons";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 import { useEffect, useState } from "react";
 import {
@@ -7,6 +8,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 import {
   getGoogleClientIds,
@@ -14,6 +16,21 @@ import {
 } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
 import { colors } from "../theme";
+
+function GoogleLabel({ text, muted }: { text: string; muted?: boolean }) {
+  return (
+    <View style={styles.labelRow}>
+      <FontAwesome
+        name="google"
+        size={18}
+        color={muted ? colors.muted : "#4285F4"}
+        accessibilityElementsHidden
+        importantForAccessibility="no"
+      />
+      <Text style={[styles.btnText, muted && styles.disabledText]}>{text}</Text>
+    </View>
+  );
+}
 
 type Props = {
   onError?: (message: string) => void;
@@ -143,9 +160,7 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
           )
         }
       >
-        <Text style={styles.disabledText}>
-          Continue with Google (needs Dev Client build)
-        </Text>
+        <GoogleLabel text="Continue with Google (needs Dev Client build)" muted />
       </Pressable>
     );
   }
@@ -162,7 +177,7 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
           )
         }
       >
-        <Text style={styles.disabledText}>Continue with Google (set client IDs)</Text>
+        <GoogleLabel text="Continue with Google (set client IDs)" muted />
       </Pressable>
     );
   }
@@ -214,7 +229,7 @@ export function GoogleSignInButton({ onError, disabled }: Props) {
       {busy ? (
         <ActivityIndicator color={colors.ink} />
       ) : (
-        <Text style={styles.btnText}>Continue with Google</Text>
+        <GoogleLabel text="Continue with Google" />
       )}
     </Pressable>
   );
@@ -231,7 +246,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   btnDisabled: { opacity: 0.55 },
-  btnText: { color: colors.ink, fontWeight: "700" },
+  labelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+  },
+  btnText: { color: colors.ink, fontWeight: "700", fontSize: 15 },
   disabled: {
     marginTop: 12,
     borderWidth: 1,

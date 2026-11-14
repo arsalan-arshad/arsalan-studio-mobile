@@ -2,6 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { projectNeeds } from "../../src/data/inquiryOptions";
+import { brand } from "../../src/lib/brand";
 import { getApiBase } from "../../src/lib/api";
 import { colors } from "../../src/theme";
 
@@ -51,7 +53,10 @@ export default function ContactScreen() {
         }),
       });
       if (!res.ok) throw new Error("fail");
-      Alert.alert("Sent", "Inquiry received. Sign in for in-app messaging.");
+      Alert.alert(
+        "Sent",
+        "Inquiry received — I'll reply by email. Sign in to continue in-app messaging.",
+      );
       setName("");
       setEmail("");
       setCompany("");
@@ -61,7 +66,7 @@ export default function ContactScreen() {
     } catch {
       Alert.alert(
         "Could not send",
-        `Is the web API running at ${getApiBase()}? You can still email arsalanarshad.dev@gmail.com.`,
+        `Is the web API running at ${getApiBase()}? You can still email ${brand.email}.`,
       );
     } finally {
       setSending(false);
@@ -74,8 +79,13 @@ export default function ContactScreen() {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={styles.title}>Contact</Text>
-      <Text style={styles.sub}>Marketplace brief — no account required.</Text>
+      <Text style={styles.title}>Get started</Text>
+      <Text style={styles.sub}>
+        Marketplace brief — no account required. Prefer email? {brand.email}
+      </Text>
+      <Pressable onPress={() => Linking.openURL(brand.privacyUrl)}>
+        <Text style={styles.privacy}>Privacy Policy →</Text>
+      </Pressable>
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -145,7 +155,13 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 48 },
   title: { color: colors.ink, fontSize: 28, fontWeight: "700" },
-  sub: { marginTop: 8, marginBottom: 20, color: colors.muted, fontSize: 14 },
+  sub: { marginTop: 8, marginBottom: 8, color: colors.muted, fontSize: 14 },
+  privacy: {
+    marginBottom: 20,
+    color: colors.accent,
+    fontWeight: "600",
+    fontSize: 13,
+  },
   label: { marginBottom: 8, color: colors.muted, fontSize: 13 },
   input: {
     borderWidth: 1,

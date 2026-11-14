@@ -177,6 +177,15 @@ export default function WorkDetailScreen() {
             </Pressable>
           ) : null}
         </View>
+        {item.installGuide ? (
+          <View style={styles.installGuide}>
+            <Text style={styles.installTitle}>{item.installGuide.title}</Text>
+            <Text style={styles.installBody}>{item.installGuide.body}</Text>
+            <Text selectable style={styles.installUrl}>
+              {item.installGuide.urlExample}
+            </Text>
+          </View>
+        ) : null}
       </ScrollView>
     </>
   );
@@ -251,4 +260,15 @@ const styles = StyleSheet.create({
   tableHead: { color: colors.ink, fontWeight: "700" },
   actions: { flexDirection: "row", flexWrap: "wrap", gap: 16, marginTop: 28 },
   link: { color: colors.accent, fontWeight: "700", fontSize: 14 },
+  installGuide: {
+    marginTop: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
+    backgroundColor: colors.elevated,
+  },
+  installTitle: { color: colors.ink, fontWeight: "700", fontSize: 14 },
+  installBody: { marginTop: 6, color: colors.muted, fontSize: 13, lineHeight: 19 },
+  installUrl: { marginTop: 10, color: colors.accent, fontSize: 12, lineHeight: 17 },
 });

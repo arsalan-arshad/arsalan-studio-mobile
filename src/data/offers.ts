@@ -5,55 +5,77 @@ export type Offer = {
   includes: string[];
   startingPoint: string;
   cta: string;
+  /** Maps to Contact `projectNeeds` ids (same as web). */
+  needParam: string;
 };
 
+/** Keep in sync with web `src/data/offers.ts`. */
 export const offers: Offer[] = [
   {
     id: "shopify-app",
     name: "I can bring a Shopify app to life",
-    forWho: "Merchants needing real Admin apps — not GPT wrappers.",
+    forWho:
+      "Merchants and partners who need a real embedded Admin experience — forecasting, inventory, protocols, or a custom extension — not another GPT wrapper.",
     includes: [
-      "Deterministic cores where numbers matter",
-      "BYOK AI that explains, never invents",
-      "App Store or self-host; open-source friendly",
+      "I can try to bring deterministic cores where numbers must be auditable",
+      "BYOK AI that explains snapshots — never invents stock figures",
+      "App Store or self-host path; Railway-ready deploy patterns I’ve shipped",
+      "Open-source-friendly handoff when you want MIT recipes",
+      "Written exclusions + acceptance tests before code",
     ],
-    startingPoint: "Send a problem brief or blueprint.",
+    startingPoint:
+      "Send a problem brief or point at an existing open-source blueprint — we’ll scope what I can actually ship.",
     cta: "Start conversation",
+    needParam: "shopify-app",
   },
   {
     id: "salesforce-package",
     name: "I can ship Salesforce packages & bridges",
-    forWho: "Teams needing 2GP utilities or Shopify ↔ SF signals.",
+    forWho:
+      "Teams that need a 2GP utility, LWC UX, or Shopify ↔ Salesforce signals without per-task sync fees.",
     includes: [
-      "LWC + Apex, unlocked 2GP",
-      "HMAC webhooks, mapping UI",
-      "Interactive demos for stakeholders",
+      "I can try to bring LWC + Apex with strong test coverage and unlocked 2GP",
+      "HMAC-safe webhooks, mapping UI, DLQ-minded integrations",
+      "Interactive demos stakeholders can click before install",
+      "AppExchange readiness dossier when listing matters",
+      "Same sole builder from spike to package promote",
     ],
-    startingPoint: "Describe the object / Flow / signal.",
+    startingPoint:
+      "Tell me the object / Flow / commerce signal — I’ll propose a fixed slice.",
     cta: "Start conversation",
+    needParam: "salesforce",
   },
   {
     id: "mobile-web",
     name: "I can deliver mobile & web products",
-    forWho: "Founders needing Expo/RN or Next.js with a real API.",
+    forWho:
+      "Founders who need Expo/RN or Next.js surfaces talking to a real API — messaging, briefs, status — not throwaways.",
     includes: [
-      "Auth-gated messaging patterns",
-      "Store-prep / CI habits",
-      "Daily progress chat",
+      "I can try to bring Expo TypeScript clients and Next.js App Router shells",
+      "Auth-gated messaging patterns (files, briefs, status) on a shared API",
+      "Store-prep / CI habits from years of App Store & Play releases",
+      "Cloud on AWS, GCP, Azure, or Firebase when the product needs it",
+      "Daily progress chat while we build",
     ],
-    startingPoint: "Name the first three screens.",
+    startingPoint:
+      "Name the first three screens or routes that matter — we ship those first.",
     cta: "Start conversation",
+    needParam: "mobile-any",
   },
   {
     id: "retainer",
     name: "I can stay on as daily collaboration",
-    forWho: "Operators wanting a sole engineer on a weekly cadence.",
+    forWho:
+      "Operators who want a sole engineer for Shopify, Salesforce, AI/automation, or product iterations — weekly cadence, not a hiring funnel.",
     includes: [
-      "Living backlog + daily check-ins",
-      "Fixed-scope slices",
-      "Open-source recipes when reusable",
+      "I can try to bring agreed hours + a living backlog you can see",
+      "Daily check-ins via the studio messaging app",
+      "Fixed-scope slices with acceptance tests",
+      "AI/automation and SME-style recipes where they fit (honest exclusions)",
+      "Open-source leftovers published with client details removed",
     ],
-    startingPoint: "Book discovery; lock cadence first.",
+    startingPoint: "Book discovery; we lock scope and cadence before any code.",
     cta: "Start conversation",
+    needParam: "retainer",
   },
 ];

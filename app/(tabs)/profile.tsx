@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Image,
   Linking,
   Pressable,
   ScrollView,
@@ -10,8 +11,10 @@ import {
   View,
 } from "react-native";
 import { GoogleSignInButton } from "../../src/components/GoogleSignInButton";
+import { studioFaqs } from "../../src/data/faqs";
 import { presenceLinks } from "../../src/data/links";
 import { useAuth } from "../../src/lib/AuthContext";
+import { brand } from "../../src/lib/brand";
 import { getApiBase } from "../../src/lib/api";
 import { colors } from "../../src/theme";
 
@@ -142,16 +145,29 @@ export default function ProfileScreen() {
       <View style={[styles.box, { marginTop: 12 }]}>
         <Text style={styles.boxTitle}>Studio note</Text>
         <Text style={styles.boxBody}>
-          Digitize Turf was an earlier personal brand I built for myself — not an
-          agency. Brand and Clutch reviews are now under Arsalan Arshad studio at
-          arsalandev.studio.
+          Clutch is under {brand.name} at {brand.domain} (same app icon).{" "}
+          {brand.pastBrand.name} was an earlier brand name only — not an agency.
         </Text>
-        <Pressable
-          onPress={() => Linking.openURL("https://clutch.co/profile/arsalan-arshad")}
-        >
-          <Text style={styles.link}>Clutch reviews · Arsalan Arshad</Text>
+        <Pressable style={styles.clutchRow} onPress={() => Linking.openURL(brand.clutch)}>
+          <Image
+            source={brand.clutchIcon}
+            style={styles.clutchIcon}
+            accessibilityLabel={`${brand.name} on Clutch`}
+          />
+          <Text style={styles.linkInline}>Clutch reviews · {brand.name}</Text>
+        </Pressable>
+        <Pressable onPress={() => Linking.openURL(brand.privacyUrl)}>
+          <Text style={styles.link}>Privacy Policy →</Text>
         </Pressable>
       </View>
+
+      <Text style={styles.section}>FAQ</Text>
+      {studioFaqs.map((faq) => (
+        <View key={faq.id} style={styles.faqBlock}>
+          <Text style={styles.faqQ}>{faq.question}</Text>
+          <Text style={styles.faqA}>{faq.answer}</Text>
+        </View>
+      ))}
 
       <Text style={styles.section}>Presence</Text>
       {presenceLinks.map((link) => (
@@ -160,7 +176,12 @@ export default function ProfileScreen() {
           style={styles.linkRow}
           onPress={() => Linking.openURL(link.href)}
         >
-          <Text style={styles.linkLabel}>{link.label}</Text>
+          <View style={styles.linkLabelRow}>
+            {link.id === "clutch" ? (
+              <Image source={brand.clutchIcon} style={styles.presenceIcon} />
+            ) : null}
+            <Text style={styles.linkLabel}>{link.label}</Text>
+          </View>
           {link.note ? <Text style={styles.linkNote}>{link.note}</Text> : null}
         </Pressable>
       ))}
@@ -217,6 +238,16 @@ const styles = StyleSheet.create({
   },
   ghostText: { color: colors.accent, fontWeight: "600", fontSize: 13 },
   link: { marginTop: 10, color: colors.accent, fontWeight: "600", fontSize: 14 },
+  clutchRow: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  clutchIcon: { width: 32, height: 32, borderRadius: 8 },
+  linkInline: { color: colors.accent, fontWeight: "600", fontSize: 14 },
+  linkLabelRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  presenceIcon: { width: 22, height: 22, borderRadius: 5 },
   section: {
     marginTop: 28,
     marginBottom: 8,
@@ -233,4 +264,11 @@ const styles = StyleSheet.create({
   },
   linkLabel: { color: colors.ink, fontWeight: "600", fontSize: 15 },
   linkNote: { marginTop: 4, color: colors.muted, fontSize: 12 },
+  faqBlock: {
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
+    paddingVertical: 12,
+  },
+  faqQ: { color: colors.ink, fontWeight: "700", fontSize: 14 },
+  faqA: { marginTop: 6, color: colors.muted, fontSize: 13, lineHeight: 19 },
 });
