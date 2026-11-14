@@ -92,6 +92,8 @@ eas submit --platform ios   # after Apple credentials configured
 
 **OTA:** `expo-updates` + `runtimeVersion.policy: appVersion` (stays `1.0.0` while you keep that version). Production builds listen on channel `production`. Store builds made *before* this config cannot receive OTAs — install one new production build first, then JS/asset pushes can ship via OTA.
 
+> EAS Workflow jobs only have Developer-level permissions, so they **cannot** publish to a **protected** Update channel. Leave `production` unprotected for the workflow OTA job, or publish with `eas update` locally / GitHub Actions using an Owner/Release Manager `EXPO_TOKEN`.
+
 ```bash
 eas update --channel production --message "Describe the change" --environment production
 ```

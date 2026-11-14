@@ -6,6 +6,8 @@ on:
       - main
 
 jobs:
+  # EAS Workflow jobs run as Developer max — `production` channel must stay
+  # unprotected or this job fails (Entity Not Authorized on protected channels).
   publish_ota:
     name: Publish OTA (production)
     type: update
