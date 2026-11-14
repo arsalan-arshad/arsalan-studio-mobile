@@ -22,6 +22,12 @@ const expoConfig = {
   scheme: "arsalanstudio",
   userInterfaceStyle: "light",
   newArchEnabled: true,
+  runtimeVersion: {
+    policy: "appVersion",
+  },
+  updates: {
+    url: "https://u.expo.dev/bf21c605-0979-43a5-a181-c2a82bd53be4",
+  },
   splash: {
     image: "./assets/splash-icon.png",
     resizeMode: "contain",

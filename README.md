@@ -86,7 +86,15 @@ eas build --profile production --platform ios
 eas submit --platform ios   # after Apple credentials configured
 ```
 
-`eas.json` already has development / preview / production profiles. Preview and production use `https://arsalandev.studio`.
+`eas.json` already has development / preview / production profiles (each with an EAS Update `channel`). Preview and production use `https://arsalandev.studio`.
+
+**EAS Workflow** (`.eas/workflows/create-production-builds.yml`) runs on every push to `main`: publishes an OTA to the `production` channel, then builds iOS + Android production binaries. Skip with `[eas skip]` / `[skip eas]` / `[no eas]` in the commit message.
+
+**OTA:** `expo-updates` + `runtimeVersion.policy: appVersion` (stays `1.0.0` while you keep that version). Production builds listen on channel `production`. Store builds made *before* this config cannot receive OTAs — install one new production build first, then JS/asset pushes can ship via OTA.
+
+```bash
+eas update --channel production --message "Describe the change" --environment production
+```
 
 Submit profile (`submit.production`) sets Android `internal`/`draft` and iOS team/SKU. After you create the app in App Store Connect, add the numeric **Apple ID** under App Information as `submit.production.ios.ascAppId` (required for non-interactive submit):
 

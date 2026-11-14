@@ -7,6 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "channel": "development",
       "env": {
         "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com",
@@ -16,6 +17,7 @@
     },
     "preview": {
       "distribution": "internal",
+      "channel": "preview",
       "env": {
         "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com",
@@ -25,6 +27,7 @@
     },
     "production": {
       "autoIncrement": true,
+      "channel": "production",
       "env": {
         "EXPO_PUBLIC_API_URL": "https://arsalandev.studio",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "122900208895-mbjpvcj9p5sf6e07d428eg90pnm6kfau.apps.googleusercontent.com",
