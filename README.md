@@ -88,7 +88,12 @@ eas submit --platform ios   # after Apple credentials configured
 
 `eas.json` already has development / preview / production profiles (each with an EAS Update `channel`). Preview and production use `https://arsalandev.studio`.
 
-**EAS Workflow** (`.eas/workflows/create-production-builds.yml`) runs on every push to `main`: publishes an OTA to the `production` channel, then builds iOS + Android production binaries. Skip with `[eas skip]` / `[skip eas]` / `[no eas]` in the commit message.
+**EAS Workflow** (`.eas/workflows/create-production-builds.yml`) runs on every push to `main`:
+1. Publish OTA → `production` channel  
+2. Build iOS + Android (production)  
+3. Submit each finished build (Play internal/draft + App Store Connect)  
+
+Skip with `[eas skip]` / `[skip eas]` / `[no eas]` in the commit message.
 
 **OTA:** `expo-updates` + `runtimeVersion.policy: appVersion` (stays `1.0.0` while you keep that version). Production builds listen on channel `production`. Store builds made *before* this config cannot receive OTAs — install one new production build first, then JS/asset pushes can ship via OTA.
 

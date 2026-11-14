@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  # EAS Workflow jobs run as Developer max — `production` channel must stay
-  # unprotected or this job fails (Entity Not Authorized on protected channels).
+  # EAS Workflow jobs run as Developer max — keep the `production` Update
+  # channel unprotected or this job fails (Entity Not Authorized).
   publish_ota:
     name: Publish OTA (production)
     type: update
@@ -27,4 +27,20 @@ jobs:
     type: build
     params:
       platform: ios
+      profile: production
+
+  submit_android:
+    name: Submit Android
+    needs: [build_android]
+    type: submit
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      profile: production
+
+  submit_ios:
+    name: Submit iOS
+    needs: [build_ios]
+    type: submit
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
       profile: production

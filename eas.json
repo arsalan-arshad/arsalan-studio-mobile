@@ -39,6 +39,7 @@
   "submit": {
     "production": {
       "ios": {
+        "ascAppId": "6831161045",
         "appleTeamId": "RFDNFB5LLH",
         "language": "en-US",
         "sku": "studio.arsalan.app",
