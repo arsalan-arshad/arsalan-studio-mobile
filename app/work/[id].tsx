@@ -1,6 +1,5 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
-  Image,
   Linking,
   Pressable,
   ScrollView,
@@ -8,7 +7,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { getBrandBanner, getBrandIcon } from "../../src/data/brandAssets";
+import { CaseStudyMedia } from "../../src/components/CaseStudyMedia";
+import { getCaseStudyMedia } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { details } from "../../src/data/caseStudyDetails";
 import { colors } from "../../src/theme";
@@ -18,8 +18,7 @@ export default function WorkDetailScreen() {
   const router = useRouter();
   const item = caseStudies.find((c) => c.id === id);
   const detail = id ? details[id] : undefined;
-  const icon = id ? getBrandIcon(id) : undefined;
-  const banner = id ? getBrandBanner(id) : undefined;
+  const media = id ? getCaseStudyMedia(id) : undefined;
 
   if (!item) {
     return (
@@ -42,25 +41,22 @@ export default function WorkDetailScreen() {
         }}
       />
       <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-        {banner ? (
-          <View style={styles.bannerFrame}>
-            <Image source={banner} style={styles.banner} resizeMode="contain" />
-          </View>
-        ) : icon ? (
-          <View style={styles.heading}>
-            <Image source={icon} style={styles.icon} resizeMode="contain" />
-            <View style={styles.headingText}>
-              <Text style={styles.status}>{item.status}</Text>
-              <Text style={styles.title}>{item.title}</Text>
-            </View>
-          </View>
-        ) : (
+        {media?.banner ? (
+          <CaseStudyMedia
+            id={item.id}
+            variant="banner"
+            style={styles.bannerFrame}
+          />
+        ) : null}
+        <View style={styles.heading}>
+          {!media?.banner && media?.icon ? (
+            <CaseStudyMedia id={item.id} variant="icon" />
+          ) : null}
           <View style={styles.headingText}>
             <Text style={styles.status}>{item.status}</Text>
             <Text style={styles.title}>{item.title}</Text>
           </View>
-        )}
-        {banner ? <Text style={styles.status}>{item.status}</Text> : null}
+        </View>
         <Text style={styles.blurb}>{detail?.summary ?? item.blurb}</Text>
 
         <Text style={styles.h2}>Problem → Solution</Text>

@@ -1,9 +1,28 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import { AuthProvider } from "../src/lib/AuthContext";
 import { colors } from "../src/theme";
 
+/** Hide Expo Dev Client's oversized floating Tools gear; shake still opens the menu. */
+function hideExpoToolsFab() {
+  try {
+    // Optional: only present in expo-dev-client / Expo Go builds.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const DevMenu = require("expo-dev-menu") as {
+      setToolsButtonVisible?: (visible: boolean) => void;
+    };
+    DevMenu.setToolsButtonVisible?.(false);
+  } catch {
+    // Production / Expo Go without the native module — ignore.
+  }
+}
+
 export default function RootLayout() {
+  useEffect(() => {
+    hideExpoToolsFab();
+  }, []);
+
   return (
     <AuthProvider>
       <StatusBar style="dark" />

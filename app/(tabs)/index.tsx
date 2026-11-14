@@ -8,7 +8,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { getBrandIcon } from "../../src/data/brandAssets";
+import { CaseStudyMedia } from "../../src/components/CaseStudyMedia";
+import { brandMark } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { buildTools } from "../../src/data/studio";
 import { presenceLinks } from "../../src/data/links";
@@ -49,7 +50,7 @@ export default function HomeScreen() {
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
       <View style={styles.heroBrand}>
         <Image
-          source={require("../../assets/brand-mark.png")}
+          source={brandMark}
           style={styles.mark}
           accessibilityLabel={`${brand.name} Studio mark`}
         />
@@ -77,7 +78,6 @@ export default function HomeScreen() {
 
       <Text style={styles.section}>Featured work</Text>
       {featured.map((item) => {
-        const icon = getBrandIcon(item.id);
         const hasLinks = Boolean(
           item.demoUrl || item.youtubeUrl || item.liveUrl || item.githubUrl,
         );
@@ -87,9 +87,7 @@ export default function HomeScreen() {
               style={styles.featureRow}
               onPress={() => router.push(`/work/${item.id}`)}
             >
-              {icon ? (
-                <Image source={icon} style={styles.featureIcon} resizeMode="contain" />
-              ) : null}
+              <CaseStudyMedia id={item.id} variant="icon" />
               <View style={styles.featureCopy}>
                 <Text style={styles.featureStatus}>{item.status}</Text>
                 <Text style={styles.featureTitle}>{item.title}</Text>
@@ -286,12 +284,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     padding: 14,
-  },
-  featureIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    backgroundColor: colors.bg,
   },
   featureCopy: { flex: 1, minWidth: 0 },
   featureStatus: {

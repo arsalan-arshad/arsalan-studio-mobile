@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { getBrandIcon } from "../../src/data/brandAssets";
+import { CaseStudyMedia } from "../../src/components/CaseStudyMedia";
 import { caseStudies } from "../../src/data/caseStudies";
 import { experience } from "../../src/data/experience";
 import { pastServices, studioFraming } from "../../src/data/studio";
@@ -21,17 +21,16 @@ export default function WorkScreen() {
   const other = caseStudies.filter((c) => c.category !== "Salesforce");
 
   function Row({ item }: { item: (typeof caseStudies)[number] }) {
-    const icon = getBrandIcon(item.id);
-
     return (
       <View style={styles.row}>
         <Pressable onPress={() => router.push(`/work/${item.id}`)}>
+          <CaseStudyMedia
+            id={item.id}
+            variant="banner"
+            style={styles.banner}
+          />
           <View style={styles.heading}>
-            {icon ? (
-              <Image source={icon} style={styles.icon} resizeMode="contain" />
-            ) : (
-              <View style={[styles.icon, styles.iconFallback]} />
-            )}
+            <CaseStudyMedia id={item.id} variant="icon" />
             <View style={styles.headingText}>
               <View style={styles.meta}>
                 <Text style={styles.cat}>{item.category}</Text>
@@ -176,15 +175,9 @@ const styles = StyleSheet.create({
   bullet: { marginTop: 6, color: colors.ink, fontSize: 13, lineHeight: 19 },
   serviceBlock: { marginTop: 12 },
   serviceTitle: { color: colors.ink, fontSize: 14, fontWeight: "700" },
+  banner: { marginBottom: 12 },
   heading: { flexDirection: "row", alignItems: "center", gap: 12 },
   headingText: { flex: 1, minWidth: 0 },
-  icon: {
-    width: 44,
-    height: 44,
-    borderRadius: 10,
-    backgroundColor: colors.elevated,
-  },
-  iconFallback: { borderWidth: 1, borderColor: colors.line },
   meta: { flexDirection: "row", gap: 10, marginBottom: 4 },
   cat: { color: colors.sage, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
   status: { color: colors.accent, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
