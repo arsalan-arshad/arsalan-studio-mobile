@@ -14,7 +14,10 @@ export type ClientReview = {
   note?: string;
 };
 
-/** Keep in sync with web `src/data/reviews.ts`. */
+/**
+ * Public client reviews. Clutch quotes link to the live Arsalan Arshad
+ * Clutch profile. Fiverr links to the live profile — open for full reviews.
+ */
 export const reviews: ClientReview[] = [
   {
     id: "clutch-personality-pool",
@@ -65,7 +68,7 @@ export const reviews: ClientReview[] = [
     quote:
       "Long-running 5★ Fiverr practice for mobile, web, and product delivery. Read current buyer reviews on the live profile.",
     author: "Fiverr buyers",
-    role: "Marketplace",
+    role: "Freelance",
     project: "Freelance delivery",
     href: "https://www.fiverr.com/s/BbbENqW",
     note: "Open Fiverr for full review history",
@@ -76,5 +79,7 @@ export const reviewStats = {
   clutchAverage: 5.0,
   clutchCount: 3,
   clutchHref: "https://clutch.co/profile/arsalan-arshad",
+  fiverrAverage: 5.0,
+  fiverrReviewCount: 49,
   fiverrHref: "https://www.fiverr.com/s/BbbENqW",
 };

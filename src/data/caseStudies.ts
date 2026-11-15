@@ -1,16 +1,19 @@
+export type CaseStudyCategory = "ai" | "shopify" | "salesforce" | "other";
+
 export type CaseStudy = {
   id: string;
   title: string;
-  category: "Shopify" | "Salesforce" | "Other";
+  category: CaseStudyCategory;
   status: string;
   blurb: string;
+  /** Manual pin within a category (lower = earlier). */
+  listOrder?: number;
   githubUrl?: string;
   liveUrl?: string;
   liveLabel?: string;
   npmUrl?: string;
   demoUrl?: string;
   demoLabel?: string;
-  /** Shown after Demo — e.g. Shopify limited-distribution install URL. */
   installGuide?: {
     title: string;
     body: string;
@@ -27,7 +30,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "pathwise",
     title: "Pathwise",
-    category: "Other",
+    category: "ai",
     status: "Released",
     blurb:
       "Query planner for RAG and agent pipelines — declare your quality SLA; Pathwise picks the cheapest plan per request. Open-source TypeScript SDK.",
@@ -37,8 +40,9 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "ai-forecast",
     title: "AI Forecast Agent",
-    category: "Shopify",
+    category: "shopify",
     status: "Live",
+    listOrder: 1,
     blurb:
       "Deterministic inventory math + grounded AI co-pilot. Live on the Shopify App Store. BYOK Gemini/Claude.",
     githubUrl: "https://github.com/arsalan-arshad/Ai-Agent-Shopify-App",
@@ -49,8 +53,9 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "protocols",
     title: "Practitioner Protocols",
-    category: "Shopify",
+    category: "shopify",
     status: "Released",
+    listOrder: 2,
     blurb:
       "Professionals share product protocols by link/QR with one-tap add-to-cart and attribution. Shopify limited distribution — install via the usage guide (not on the public App Store yet).",
     githubUrl: "https://github.com/arsalan-arshad/practitioner-protocols",
@@ -69,7 +74,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "pipeline",
     title: "Pipeline-Aware Forecast",
-    category: "Shopify",
+    category: "shopify",
     status: "Pending Shopify",
     blurb:
       "Salesforce pipeline becomes forward demand in Shopify forecasting — the connective tissue most stacks skip. Pending Shopify review / App Store listing.",
@@ -79,7 +84,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "bridge",
     title: "Bridge Core Recipes",
-    category: "Shopify",
+    category: "shopify",
     status: "Pending Shopify",
     blurb:
       "Small shared core + narrow Shopify → Salesforce recipes instead of a bloated horizontal sync. Pending Shopify review / App Store listing.",
@@ -89,7 +94,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "mcp",
     title: "Inventory MCP Server",
-    category: "Shopify",
+    category: "shopify",
     status: "Released",
     blurb:
       "Open-source MCP (v0.2.3): deterministic inventory forecasts for any AI assistant — local stdio or hosted Streamable HTTP. BYOK Shopify headers; numbers the model can explain, not invent.",
@@ -100,7 +105,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "smart-cloner",
     title: "Smart Record Cloner",
-    category: "Salesforce",
+    category: "salesforce",
     status: "Released",
     blurb:
       "Deep clone utility with smart date shifting, child tagging, and Agentforce-ready invocable actions. AppExchange in review.",
@@ -114,7 +119,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "flow-toast",
     title: "Clean Flow Toast & Alerts",
-    category: "Salesforce",
+    category: "salesforce",
     status: "Released",
     blurb:
       "Flow UI supercharger — Web Audio cues, confetti particles, sticky actionable toasts, platform events.",
@@ -128,7 +133,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "file-viewer",
     title: "Universal Quick File Viewer",
-    category: "Salesforce",
+    category: "salesforce",
     status: "Released",
     blurb:
       "Record-page LWC gallery, lightbox, bulk ZIP download, drag-and-drop upload, Agentforce summarizer.",
@@ -142,7 +147,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "sf-connector",
     title: "Shopify ↔ Salesforce Connector",
-    category: "Salesforce",
+    category: "salesforce",
     status: "Released",
     blurb:
       "Zero per-task fees. HMAC webhooks, DLQ retries, custom metadata mapping LWC in Setup.",
@@ -156,7 +161,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "forecast-bridge",
     title: "Shopify AI Forecast Bridge",
-    category: "Salesforce",
+    category: "salesforce",
     status: "Released",
     blurb:
       "WMA stockout math in Salesforce + conversational inventory agent (BYOK) with opportunity stock checks.",
@@ -170,7 +175,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "urdu-nlu",
     title: "Urdu Business NLU",
-    category: "Other",
+    category: "other",
     status: "Completed",
     blurb:
       "MIT TypeScript library: informal Urdu / Roman-Urdu business messages → validated structured records. Published on npm.",
@@ -182,7 +187,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "hub",
     title: "Influencer Hub",
-    category: "Other",
+    category: "other",
     status: "Live",
     blurb:
       "Stockroom Studio hub for AI influencer characters (Nana Says, Pallet the Robot) — labeled as AI, not human creators.",
@@ -193,7 +198,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "proposal-guard",
     title: "Proposal Guard",
-    category: "Other",
+    category: "other",
     status: "Live",
     blurb:
       "Deterministic, offline scope-creep checker for proposals and SOWs — quotes the risky sentence, names the rule, suggests a fill-in-the-blanks fix. Not legal advice.",
@@ -205,7 +210,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "sme",
     title: "SME Automation Services",
-    category: "Other",
+    category: "other",
     status: "Coming soon",
     blurb:
       "Fixed-scope WhatsApp / ERP / Shopify / Salesforce automation with open-source recipes and honest exclusions.",
@@ -213,7 +218,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "eu-ai-act",
     title: "EU AI Act Checker",
-    category: "Other",
+    category: "other",
     status: "Coming soon",
     blurb:
       "Open scanner for public-site AI Act transparency basics + paid audit report. Technical check, not legal advice.",
@@ -222,10 +227,67 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "freight",
     title: "Freight Exceptions",
-    category: "Other",
+    category: "other",
     status: "Coming soon",
     blurb:
       "Deterministic exception rules for small brokers/3PLs — AI extracts and drafts; humans approve.",
     githubUrl: "https://github.com/arsalan-arshad/freight-exceptions",
   },
 ];
+
+export const categoryKeys: CaseStudyCategory[] = [
+  "ai",
+  "shopify",
+  "salesforce",
+  "other",
+];
+
+export const categoryLabel: Record<CaseStudyCategory, string> = {
+  ai: "AI",
+  shopify: "Shopify",
+  salesforce: "Salesforce",
+  other: "Libraries",
+};
+
+const statusRank: Record<string, number> = {
+  Live: 0,
+  Released: 1,
+  Completed: 1,
+  "Pending Shopify": 2,
+  "Coming soon": 3,
+};
+
+const STATUS_SORT_BASE = 100;
+
+export function sortCaseStudiesByStatus(studies: CaseStudy[]): CaseStudy[] {
+  return [...studies].sort((a, b) => {
+    const aKey = a.listOrder ?? STATUS_SORT_BASE + (statusRank[a.status] ?? 9);
+    const bKey = b.listOrder ?? STATUS_SORT_BASE + (statusRank[b.status] ?? 9);
+    return aKey - bKey;
+  });
+}
+
+export function studiesByCategory(category: CaseStudyCategory) {
+  return sortCaseStudiesByStatus(
+    caseStudies.filter((c) => c.category === category),
+  );
+}
+
+export function parseWorkCategory(
+  value: string | string[] | undefined,
+): CaseStudyCategory | null {
+  const raw = Array.isArray(value) ? value[0] : value;
+  if (!raw) return null;
+  return categoryKeys.includes(raw as CaseStudyCategory)
+    ? (raw as CaseStudyCategory)
+    : null;
+}
+
+export function panelEyebrow(
+  key: CaseStudyCategory,
+  count: number,
+): string | undefined {
+  if (key === "salesforce") return `Full suite · ${count} packages`;
+  if (key === "other") return "npm · hosted · open source";
+  return undefined;
+}

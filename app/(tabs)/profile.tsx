@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -156,6 +157,11 @@ export default function ProfileScreen() {
           />
           <Text style={styles.linkInline}>Clutch reviews · {brand.name}</Text>
         </Pressable>
+        <Link href="/job-history" asChild>
+          <Pressable>
+            <Text style={styles.link}>Job history →</Text>
+          </Pressable>
+        </Link>
         <Pressable onPress={() => Linking.openURL(brand.privacyUrl)}>
           <Text style={styles.link}>Privacy Policy →</Text>
         </Pressable>

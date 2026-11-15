@@ -15,6 +15,33 @@ export const pastServices = [
   },
 ] as const;
 
+/** Value props — text-only on mobile (web uses Digitize Turf SVG icons). */
+export const studioPrinciples = [
+  { id: "clean", name: "Clean code" },
+  { id: "oop", name: "Solid architecture" },
+  { id: "response", name: "Fast response" },
+  { id: "value", name: "Clear value" },
+  { id: "availability", name: "Daily collaboration" },
+  { id: "cloud", name: "Cloud-ready delivery" },
+] as const;
+
+export const studioSkills = [
+  { id: "react", name: "React / RN" },
+  { id: "ts", name: "TypeScript" },
+  { id: "node", name: "Node.js" },
+  { id: "next", name: "Next.js" },
+  { id: "nest", name: "NestJS" },
+  { id: "flutter", name: "Flutter" },
+  { id: "ios", name: "iOS" },
+  { id: "android", name: "Android" },
+  { id: "aws", name: "AWS" },
+  { id: "gcp", name: "GCP" },
+  { id: "azure", name: "Azure" },
+  { id: "firebase", name: "Firebase" },
+  { id: "docker", name: "Docker" },
+  { id: "figma", name: "Figma" },
+] as const;
+
 export const buildTools = [
   {
     id: "cursor",
@@ -32,15 +59,3 @@ export const buildTools = [
     blurb: "Orchestration layer across agents, tasks, and delivery cadence.",
   },
 ] as const;
-
-export const studioFraming = {
-  headline: "One builder — this studio",
-  body:
-    "The craft started under an earlier personal brand name (Digitize Turf). Today the studio — and verified Clutch reviews — are fully under Arsalan Arshad at arsalandev.studio. Inquire, chat daily, ship directly.",
-  bullets: [
-    "Remote-first delivery across time zones",
-    "Mobile apps (iOS, Android, React Native) with store CI/CD",
-    "Startup and marketplace product work — sole builder, not an agency",
-    "Clutch profile is Arsalan Arshad (same app icon) — Digitize Turf is history only",
-  ],
-} as const;

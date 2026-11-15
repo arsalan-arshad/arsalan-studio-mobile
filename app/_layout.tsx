@@ -49,6 +49,14 @@ export default function RootLayout() {
             headerBackTitle: "Work",
           }}
         />
+        <Stack.Screen
+          name="job-history"
+          options={{
+            title: "Job history",
+            presentation: "card",
+            headerBackTitle: "Back",
+          }}
+        />
       </Stack>
     </AuthProvider>
   );

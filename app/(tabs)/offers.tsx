@@ -23,7 +23,9 @@ export default function OffersScreen() {
               · {line}
             </Text>
           ))}
-          <Text style={styles.start}>{offer.startingPoint}</Text>
+          {offer.startingPoint ? (
+            <Text style={styles.start}>{offer.startingPoint}</Text>
+          ) : null}
           <Link
             href={{ pathname: "/contact", params: { need: offer.needParam } }}
             asChild

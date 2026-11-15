@@ -1,140 +1,42 @@
-import { useRouter } from "expo-router";
-import {
-  Image,
-  Linking,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { CaseStudyMedia } from "../../src/components/CaseStudyMedia";
-import { caseStudies } from "../../src/data/caseStudies";
-import { experience } from "../../src/data/experience";
-import { pastServices, studioFraming } from "../../src/data/studio";
-import { brand } from "../../src/lib/brand";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { CaseStudyCategoryTabs } from "../../src/components/CaseStudyCategoryTabs";
+import { parseWorkCategory } from "../../src/data/caseStudies";
 import { colors } from "../../src/theme";
 
 export default function WorkScreen() {
   const router = useRouter();
-  const salesforce = caseStudies.filter((c) => c.category === "Salesforce");
-  const other = caseStudies.filter((c) => c.category !== "Salesforce");
-
-  function Row({ item }: { item: (typeof caseStudies)[number] }) {
-    return (
-      <View style={styles.row}>
-        <Pressable onPress={() => router.push(`/work/${item.id}`)}>
-          <CaseStudyMedia
-            id={item.id}
-            variant="banner"
-            style={styles.banner}
-          />
-          <View style={styles.heading}>
-            <CaseStudyMedia id={item.id} variant="icon" />
-            <View style={styles.headingText}>
-              <View style={styles.meta}>
-                <Text style={styles.cat}>{item.category}</Text>
-                <Text style={styles.status}>{item.status}</Text>
-              </View>
-              <Text style={styles.name}>{item.title}</Text>
-            </View>
-          </View>
-          <Text style={styles.blurb}>{item.blurb}</Text>
-          <Text style={styles.know}>Know more →</Text>
-        </Pressable>
-        <View style={styles.links}>
-          {item.githubUrl ? (
-            <Pressable onPress={() => Linking.openURL(item.githubUrl!)}>
-              <Text style={styles.link}>GitHub</Text>
-            </Pressable>
-          ) : null}
-          {item.liveUrl ? (
-            <Pressable onPress={() => Linking.openURL(item.liveUrl!)}>
-              <Text style={styles.link}>{item.liveLabel ?? "Live"}</Text>
-            </Pressable>
-          ) : null}
-          {item.demoUrl ? (
-            <Pressable onPress={() => Linking.openURL(item.demoUrl!)}>
-              <Text style={styles.link}>{item.demoLabel ?? "Demo"}</Text>
-            </Pressable>
-          ) : null}
-          {item.youtubeUrl ? (
-            <Pressable onPress={() => Linking.openURL(item.youtubeUrl!)}>
-              <Text style={styles.link}>{item.youtubeLabel ?? "YouTube"}</Text>
-            </Pressable>
-          ) : null}
-          {item.npmUrl ? (
-            <Pressable onPress={() => Linking.openURL(item.npmUrl!)}>
-              <Text style={styles.link}>npm</Text>
-            </Pressable>
-          ) : null}
-        </View>
-        {item.installGuide ? (
-          <View style={styles.installGuide}>
-            <Text style={styles.installTitle}>{item.installGuide.title}</Text>
-            <Text style={styles.installBody}>{item.installGuide.body}</Text>
-            <Text selectable style={styles.installUrl}>
-              {item.installGuide.urlExample}
-            </Text>
-          </View>
-        ) : null}
-      </View>
-    );
-  }
+  const { category } = useLocalSearchParams<{ category?: string }>();
+  const initial = parseWorkCategory(category) ?? undefined;
 
   return (
     <ScrollView style={styles.root} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Case studies</Text>
+      <Text style={styles.eyebrow}>Featured work</Text>
+      <Text style={styles.title}>Case studies & launches</Text>
       <Text style={styles.sub}>
-        Tap a title for the full case study. GitHub / Live / Demo / YouTube stay
-        separate. Open source (MIT) where noted — PRs welcome.
+        Open-source by default — MIT where noted, open for PRs. Tap Know more
+        for the full case study; GitHub / Live / Demo / YouTube stay as separate
+        actions.
       </Text>
 
-      <Text style={styles.section}>Salesforce · full suite</Text>
-      {salesforce.map((item) => (
-        <Row key={item.id} item={item} />
-      ))}
+      <CaseStudyCategoryTabs
+        mode="full"
+        initialCategory={category}
+        onCategoryChange={(key) => {
+          router.setParams({ category: key });
+        }}
+      />
 
-      <Text style={styles.section}>Shopify & other</Text>
-      {other.map((item) => (
-        <Row key={item.id} item={item} />
-      ))}
-
-      <Text style={[styles.title, { marginTop: 28 }]}>Jobs & experience</Text>
-      <Text style={styles.sub}>Worker history from the resume — not hiring.</Text>
-
-      <View style={styles.studioCard}>
-        <Text style={styles.studioHeadline}>{studioFraming.headline}</Text>
-        <Text style={styles.blurb}>{studioFraming.body}</Text>
-        {studioFraming.bullets.map((b) => (
-          <Text key={b} style={styles.bullet}>
-            · {b}
-          </Text>
-        ))}
-        {pastServices.map((service) => (
-          <View key={service.title} style={styles.serviceBlock}>
-            <Text style={styles.serviceTitle}>{service.title}</Text>
-            <Text style={styles.blurb}>{service.body}</Text>
-          </View>
-        ))}
-        <Pressable style={styles.clutchRow} onPress={() => Linking.openURL(brand.clutch)}>
-          <Image
-            source={brand.clutchIcon}
-            style={styles.clutchIcon}
-            accessibilityLabel={`${brand.name} on Clutch`}
-          />
-          <Text style={styles.linkInline}>Clutch · {brand.name} →</Text>
-        </Pressable>
+      <View style={styles.footerLinks}>
+        <Link href="/job-history" asChild>
+          <Pressable>
+            <Text style={styles.footerLink}>Job history →</Text>
+          </Pressable>
+        </Link>
+        {initial ? (
+          <Text style={styles.hint}>Showing {initial} category</Text>
+        ) : null}
       </View>
-
-      {experience.map((job) => (
-        <View key={job.id} style={styles.row}>
-          <Text style={styles.status}>{job.period}</Text>
-          <Text style={styles.name}>{job.title}</Text>
-          <Text style={styles.org}>{job.org}</Text>
-          <Text style={styles.blurb}>{job.detail}</Text>
-        </View>
-      ))}
     </ScrollView>
   );
 }
@@ -142,68 +44,28 @@ export default function WorkScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 24, paddingBottom: 48 },
-  title: { color: colors.ink, fontSize: 28, fontWeight: "700", letterSpacing: -0.5 },
-  sub: { marginTop: 8, marginBottom: 12, color: colors.muted, fontSize: 14, lineHeight: 20 },
-  section: {
-    marginTop: 16,
-    marginBottom: 4,
-    color: colors.sage,
-    fontSize: 12,
-    letterSpacing: 1.2,
+  eyebrow: {
+    color: colors.accent,
+    fontSize: 11,
+    letterSpacing: 1.4,
     textTransform: "uppercase",
-    fontWeight: "700",
+    fontWeight: "600",
   },
-  row: {
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
-    paddingVertical: 16,
-  },
-  studioCard: {
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 8,
-    padding: 14,
-    marginBottom: 8,
-    backgroundColor: colors.elevated,
-  },
-  studioHeadline: {
+  title: {
+    marginTop: 8,
     color: colors.ink,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: "700",
-    marginBottom: 6,
+    letterSpacing: -0.5,
   },
-  bullet: { marginTop: 6, color: colors.ink, fontSize: 13, lineHeight: 19 },
-  serviceBlock: { marginTop: 12 },
-  serviceTitle: { color: colors.ink, fontSize: 14, fontWeight: "700" },
-  banner: { marginBottom: 12 },
-  heading: { flexDirection: "row", alignItems: "center", gap: 12 },
-  headingText: { flex: 1, minWidth: 0 },
-  meta: { flexDirection: "row", gap: 10, marginBottom: 4 },
-  cat: { color: colors.sage, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
-  status: { color: colors.accent, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 },
-  name: { color: colors.ink, fontSize: 18, fontWeight: "700" },
-  org: { marginTop: 2, color: colors.ink, opacity: 0.8, fontSize: 14, fontWeight: "500" },
-  blurb: { marginTop: 8, color: colors.muted, fontSize: 14, lineHeight: 20 },
-  know: { marginTop: 10, color: colors.accent, fontWeight: "700", fontSize: 14 },
-  links: { flexDirection: "row", flexWrap: "wrap", gap: 14, marginTop: 8 },
-  link: { marginTop: 12, color: colors.accent, fontSize: 13, fontWeight: "700" },
-  clutchRow: {
-    marginTop: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+  sub: {
+    marginTop: 8,
+    marginBottom: 12,
+    color: colors.muted,
+    fontSize: 14,
+    lineHeight: 20,
   },
-  clutchIcon: { width: 32, height: 32, borderRadius: 8 },
-  linkInline: { color: colors.accent, fontSize: 13, fontWeight: "700" },
-  installGuide: {
-    marginTop: 12,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 8,
-    backgroundColor: colors.elevated,
-  },
-  installTitle: { color: colors.ink, fontWeight: "700", fontSize: 12 },
-  installBody: { marginTop: 4, color: colors.muted, fontSize: 12, lineHeight: 17 },
-  installUrl: { marginTop: 8, color: colors.accent, fontSize: 11, lineHeight: 16 },
+  footerLinks: { marginTop: 28, gap: 8 },
+  footerLink: { color: colors.accent, fontWeight: "700", fontSize: 14 },
+  hint: { color: colors.muted, fontSize: 12 },
 });
