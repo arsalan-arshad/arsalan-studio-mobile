@@ -38,6 +38,17 @@ export const caseStudies: CaseStudy[] = [
     npmUrl: "https://www.npmjs.com/package/@arsalandev/pathwise",
   },
   {
+    id: "gatekeeper",
+    title: "Gatekeeper",
+    category: "ai",
+    status: "Live",
+    blurb:
+      "Open-source AI principal — your front door for inbound requests. Plain-English rules, double-opt-in intros, public ledger reputation. AGPL.",
+    liveUrl: "https://gatekeeper.arsalandev.studio/",
+    liveLabel: "Live",
+    githubUrl: "https://github.com/arsalan-arshad/gatekeeper",
+  },
+  {
     id: "ai-forecast",
     title: "AI Forecast Agent",
     category: "shopify",

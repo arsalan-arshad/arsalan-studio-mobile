@@ -83,6 +83,30 @@ export const details: Record<string, MobileDetail> = {
     ],
     openSource: "MIT — https://github.com/arsalan-arshad/pathwise",
   },
+  gatekeeper: {
+    id: "gatekeeper",
+    summary:
+      "Open-source AI principal: your front door for inbound requests. Rules-based judging, double-opt-in intros, public ledger reputation. AGPL.",
+    problem:
+      "Inbound pitches from humans and AI agents have no shared reputation layer — saying yes/no by hand doesn't scale; silent auto-accept invites spam.",
+    solution:
+      "Gatekeeper judges requests against plain-English rules, rejects spam/bad fits with a public reason, and only delivers double-opt-in intros. Public ledger (accept rate, spam blocked, helpful ratings) is the reputation.",
+    audience: "Indie SaaS founders and remote tech hiring who want an AI front door that can say no.",
+    usage: [
+      "Hosted: https://gatekeeper.arsalandev.studio/ — /start onboarding, publish /@handle",
+      "Or clone https://github.com/arsalan-arshad/gatekeeper — Node ≥ 20, pnpm 9",
+      "pnpm install && migrate db && pnpm dev; agents POST /v1/requests",
+    ],
+    features: [
+      "Plain-English gate rules + public profile",
+      "Double-opt-in intros only",
+      "Public ledger reputation",
+      "Agent API (OpenAPI + llms.txt)",
+      "AGPL-3.0 monorepo (Fastify + Next.js + pgvector)",
+    ],
+    openSource:
+      "AGPL-3.0 — https://github.com/arsalan-arshad/gatekeeper · Live https://gatekeeper.arsalandev.studio/",
+  },
   "ai-forecast": {
     id: "ai-forecast",
     summary:
