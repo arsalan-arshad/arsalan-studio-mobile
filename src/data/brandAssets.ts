@@ -17,6 +17,10 @@ export const caseStudyMedia: Record<string, CaseStudyMedia> = {
     icon: require("../../assets/brands/ai/pathwise/icon.png"),
     banner: require("../../assets/brands/ai/pathwise/banner.png"),
   },
+  gatekeeper: {
+    icon: require("../../assets/brands/ai/gatekeeper/icon.png"),
+    banner: require("../../assets/brands/ai/gatekeeper/banner.png"),
+  },
   "ai-forecast": {
     icon: require("../../assets/brands/shopify/ai-forecast-agent/icon.png"),
     banner: require("../../assets/brands/shopify/ai-forecast-agent/banner.png"),
