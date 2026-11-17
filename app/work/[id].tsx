@@ -11,6 +11,7 @@ import { CaseStudyMedia } from "../../src/components/CaseStudyMedia";
 import { getCaseStudyMedia } from "../../src/data/brandAssets";
 import { caseStudies } from "../../src/data/caseStudies";
 import { details } from "../../src/data/caseStudyDetails";
+import { InstallGuideUrl, linkifyText } from "../../src/lib/linkify";
 import { colors } from "../../src/theme";
 
 export default function WorkDetailScreen() {
@@ -73,7 +74,8 @@ export default function WorkDetailScreen() {
             <Text style={styles.h2}>Usage</Text>
             {detail.usage.map((step, i) => (
               <Text key={step} style={styles.bullet}>
-                {i + 1}. {step}
+                {i + 1}.{" "}
+                {linkifyText(step, styles.bullet, styles.link)}
               </Text>
             ))}
           </>
@@ -177,9 +179,10 @@ export default function WorkDetailScreen() {
           <View style={styles.installGuide}>
             <Text style={styles.installTitle}>{item.installGuide.title}</Text>
             <Text style={styles.installBody}>{item.installGuide.body}</Text>
-            <Text selectable style={styles.installUrl}>
-              {item.installGuide.urlExample}
-            </Text>
+            <InstallGuideUrl
+              url={item.installGuide.urlExample}
+              style={styles.installUrl}
+            />
           </View>
         ) : null}
       </ScrollView>
