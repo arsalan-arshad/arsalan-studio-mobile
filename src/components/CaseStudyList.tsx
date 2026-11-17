@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import type { CaseStudy } from "../data/caseStudies";
+import { InstallGuideUrl } from "../lib/linkify";
 import { colors } from "../theme";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 
@@ -72,9 +73,10 @@ export function CaseStudyListItem({ item }: { item: CaseStudy }) {
         <View style={styles.installGuide}>
           <Text style={styles.installTitle}>{item.installGuide.title}</Text>
           <Text style={styles.installBody}>{item.installGuide.body}</Text>
-          <Text selectable style={styles.installUrl}>
-            {item.installGuide.urlExample}
-          </Text>
+          <InstallGuideUrl
+            url={item.installGuide.urlExample}
+            style={styles.installUrl}
+          />
         </View>
       ) : null}
     </View>

@@ -93,9 +93,11 @@ export const details: Record<string, MobileDetail> = {
       "Gatekeeper judges requests against plain-English rules, rejects spam/bad fits with a public reason, and only delivers double-opt-in intros. Public ledger (accept rate, spam blocked, helpful ratings) is the reputation.",
     audience: "Indie SaaS founders and remote tech hiring who want an AI front door that can say no.",
     usage: [
-      "Hosted: https://gatekeeper.arsalandev.studio/ — /start onboarding, publish /@handle",
-      "Or clone https://github.com/arsalan-arshad/gatekeeper — Node ≥ 20, pnpm 9",
-      "pnpm install && migrate db && pnpm dev; agents POST /v1/requests",
+      "Public handler (pitch Arsalan): https://gatekeeper.arsalandev.studio/@arsalandev — humans and agents open this profile to request an intro.",
+      "Hosted: https://gatekeeper.arsalandev.studio/ — open /start, magic-link onboarding, write plain-English gate rules, publish /@handle.",
+      "Or self-host: clone https://github.com/arsalan-arshad/gatekeeper — Node ≥ 20, pnpm 9; set DATABASE_URL and LLM keys.",
+      "pnpm install && pnpm --filter @gatekeeper/db db:migrate && pnpm dev (API :4000, web :3000).",
+      "Agents/humans POST /v1/requests (Bearer key); Accept/Decline emails complete the double opt-in; /ledger shows reputation.",
     ],
     features: [
       "Plain-English gate rules + public profile",
